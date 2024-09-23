@@ -1,4 +1,41 @@
 {
+    "navbar": {
+        "links": [
+            {
+                "label": "Профиль",
+                "children": [
+                    {
+                        "label": "О Профсоюзе",
+                        "href": "/"
+                    },
+                    {
+                        "label": "Коллегиальные органы",
+                        "href": "/#collegiate-bodies"
+                    },
+                    {
+                        "label": "Аппарат",
+                        "href": "/#apparatus"
+                    },
+                    {
+                        "label": "Социальное партнерство",
+                        "href": "/#partners"
+                    }
+                ]
+            },
+            {
+                "label": "Структура",
+                "href": "/structure"
+            },
+            {
+                "label": "Члены профсоюза",
+                "href": "/workers"
+            },
+            {
+                "label": "Формы отчетов",
+                "href": "/reports"
+            }
+        ]
+    },
     "home": {
         "title": "Home",
         "about": "O"

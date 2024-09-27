@@ -14,19 +14,19 @@
                 "children": [
                     {
                         "label": "О Профсоюзе",
-                        "href": "/"
+                        "href": "/?type=about"
                     },
                     {
                         "label": "Коллегиальные органы",
-                        "href": "/#collegiate-bodies"
+                        "href": "/?type=collegiate-bodies"
                     },
                     {
                         "label": "Аппарат",
-                        "href": "/#apparatus"
+                        "href": "/?type=apparatus"
                     },
                     {
                         "label": "Социальное партнерство",
-                        "href": "/#partners"
+                        "href": "/?type=partners"
                     }
                 ]
             },

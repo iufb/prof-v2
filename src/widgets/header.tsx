@@ -10,7 +10,7 @@ import { getTranslations } from "next-intl/server";
 
 export const Header = () => {
   return (
-    <header className="max-w-[1400px] mx-auto">
+    <header className="max-w-[1400px] mx-auto h-20 text-md flex items-center justify-start">
       <Navbar />
     </header>
   );
@@ -31,11 +31,13 @@ const Navbar = async () => {
           <NavigationMenuItem key={idx}>
             {link.children ? (
               <>
-                <NavigationMenuTrigger>{link.label}</NavigationMenuTrigger>
+                <NavigationMenuTrigger className="text-md">
+                  {link.label}
+                </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="flex flex-col gap-3 p-3">
                     {link.children.map((child, idx) => (
-                      <li className="text-sm font-medium" key={idx}>
+                      <li className=" font-medium" key={idx}>
                         <Link href={child.href}>{child.label}</Link>
                       </li>
                     ))}
@@ -43,7 +45,7 @@ const Navbar = async () => {
                 </NavigationMenuContent>
               </>
             ) : (
-              <Link className="text-sm font-medium" href={link.href}>
+              <Link className="font-medium" href={link.href}>
                 {link.label}
               </Link>
             )}

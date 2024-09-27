@@ -23,7 +23,6 @@ const Navbar = async () => {
     href: string;
     children?: { label: string; href: string }[];
   }> = t.raw("links");
-  console.log(links);
 
   return (
     <NavigationMenu>

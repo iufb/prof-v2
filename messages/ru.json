@@ -1,4 +1,12 @@
 {
+    "login": {
+        "title": "Вход",
+        "form": {
+            "login": "Логин или БИН",
+            "password": "Пароль",
+            "btn": "Войти"
+        }
+    },
     "navbar": {
         "links": [
             {

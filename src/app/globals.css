@@ -79,6 +79,9 @@ body {
   * {
     @apply border-border;
   }
+  .min-w-LoginForm {
+    min-width: min(30vw, 400px);
+  }
   body {
     @apply bg-background text-foreground;
   }

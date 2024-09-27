@@ -16,11 +16,8 @@ export const ProfInfo = () => {
   };
 
   return (
-    <section className="p-5 border border-slate-300 rounded-sm min-h-[calc(100svh-90px)]">
-      <Tabs
-        defaultValue={searchParams.get("type") ?? "about"}
-        className="w-[400px]"
-      >
+    <section className="p-5 border border-slate-300  rounded-sm min-h-[calc(100svh-90px)]">
+      <Tabs defaultValue={searchParams.get("type") ?? "about"}>
         <TabsList className="gap-4 py-8 px-5">
           {links.map((link) => (
             <TabsTrigger

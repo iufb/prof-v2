@@ -51,6 +51,12 @@ const Navbar = async () => {
             )}
           </NavigationMenuItem>
         ))}
+        <Link className="font-medium" href={"/add?type=prof"}>
+          {t("add.prof")}
+        </Link>
+        <Link className="font-medium" href={"/add?type=worker"}>
+          {t("add.worker")}
+        </Link>
       </NavigationMenuList>
     </NavigationMenu>
   );

@@ -1,4 +1,5 @@
 export { Button } from "./button";
+export { Calendar } from "./calendar";
 export { Input } from "./input";
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./tabs";
 export {

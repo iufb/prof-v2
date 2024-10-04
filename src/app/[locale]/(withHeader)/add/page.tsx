@@ -1,4 +1,10 @@
-import { AddProfForm, AddReportForm, AddWorkerForm } from "@/src/features";
+import {
+  AddProfCollegiateBodiesForm,
+  AddProfForm,
+  AddReportForm,
+  AddSocialPartnershipAgreementsForm,
+  AddWorkerForm,
+} from "@/src/features";
 
 export default function AddPage({
   searchParams,
@@ -18,9 +24,12 @@ const getForm = (type: string) => {
       return <AddProfForm />;
     case "worker":
       return <AddWorkerForm />;
+    case "soc":
+      return <AddSocialPartnershipAgreementsForm />;
     case "report":
       return <AddReportForm />;
-
+    case "bodies":
+      return <AddProfCollegiateBodiesForm />;
     default:
       return <div>Not found</div>;
   }

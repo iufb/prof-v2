@@ -8,6 +8,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/src/shared/ui";
+import { Label } from "@/src/shared/ui/label";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 interface SelectInputProps {
@@ -29,25 +30,28 @@ export const SelectInput = ({ value, select, onChange }: SelectInputProps) => {
       <Input placeholder={select.label} value={value} onChange={onChange} />
     </div>
   ) : (
-    <Select
-      onValueChange={(value) => {
-        if (value == select.values[select.values.length - 1]) {
-          setOther(true);
-        }
-        onChange(value);
-      }}
-      value={value}
-    >
-      <SelectTrigger className="w-full bg-white">
-        <SelectValue placeholder={select.label} />
-      </SelectTrigger>
-      <SelectContent>
-        {select.values.map((value) => (
-          <SelectItem key={value} value={value}>
-            {value}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <div className="flex  flex-col gap-2">
+      <Label className="text-md ">{select.label}</Label>
+      <Select
+        onValueChange={(value) => {
+          if (value == select.values[select.values.length - 1]) {
+            setOther(true);
+          }
+          onChange(value);
+        }}
+        value={value}
+      >
+        <SelectTrigger className="w-full bg-white">
+          <SelectValue placeholder={select.label} />
+        </SelectTrigger>
+        <SelectContent>
+          {select.values.map((value) => (
+            <SelectItem key={value} value={value}>
+              {value}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 };

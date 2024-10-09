@@ -35,9 +35,3 @@ const Step = ({ stepNumber, children }: StepProps) => {
 };
 
 export { Step, Stepper };
-<Stepper currentStep={1}>
-  <Step stepNumber="1">1</Step>
-  <Step stepNumber="2">2</Step>
-  <Step stepNumber="3">3</Step>
-  <Step stepNumber="4">4</Step>
-</Stepper>;

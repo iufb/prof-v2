@@ -1,6 +1,8 @@
 "use client";
 import { AddAwardForm } from "@/src/features/addAwardForm";
 import { AddVacationForm } from "@/src/features/addVacationForm";
+import { CreateWorker } from "@/src/shared/api/worker";
+import { useLocation } from "@/src/shared/hooks";
 import {
   Button,
   Dialog,
@@ -17,20 +19,38 @@ import {
   SelectValue,
 } from "@/src/shared/ui";
 import { Label } from "@/src/shared/ui/label";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 export const AddWorkerForm = () => {
   const t = useTranslations("addWorkerForm");
+  const tGlobal = useTranslations();
+  const { router, pathname, getAllSearchParams } = useLocation();
+  const { mutateAsync, isPending, isError } = useMutation({
+    mutationKey: ["addWorker"],
+    mutationFn: CreateWorker,
+    onSuccess: (data) => {
+      router.push(`${pathname}/${getAllSearchParams().url}&id=${data.id}`);
+    },
+  });
+
   const inputs: string[] = t.raw("inputs");
   const [show, setShow] = useState(false);
   const selects: { label: string; values: string[] }[] = t.raw("selects");
   const dates: string[] = t.raw("dates");
   const files: string[] = t.raw("files");
-  const { register, handleSubmit, control } = useForm<FormFields>();
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormFields>();
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     console.log(data);
-    setShow(true);
+    mutateAsync(data).then(() => {
+      setShow(true);
+    });
   };
   return (
     <section>
@@ -45,8 +65,10 @@ export const AddWorkerForm = () => {
               key={file}
               control={control}
               name={fileKeys[idx]}
+              rules={{ required: tGlobal("forms.required") }}
               render={({ field: { onChange, value } }) => (
                 <Input
+                  error={errors[fileKeys[idx]]?.message}
                   placeholder={file}
                   type="file"
                   onChange={onChange}
@@ -58,7 +80,10 @@ export const AddWorkerForm = () => {
 
           {inputs.map((input, idx) => (
             <Input
-              {...register(inputKeys[idx])}
+              {...register(inputKeys[idx], {
+                required: tGlobal("forms.required"),
+              })}
+              error={errors[inputKeys[idx]]?.message}
               key={input}
               placeholder={input}
             />
@@ -67,29 +92,38 @@ export const AddWorkerForm = () => {
             <Controller
               key={select.label}
               control={control}
+              rules={{ required: tGlobal("forms.required") }}
               name={selectKeys[idx]}
-              render={({ field: { onChange, value } }) =>
-                selectKeys[idx] == "position" ? (
-                  <SelectInput
-                    value={value}
-                    onChange={onChange}
-                    select={select}
-                  />
-                ) : (
-                  <Select onValueChange={onChange} value={value}>
-                    <SelectTrigger className="w-full bg-white">
-                      <SelectValue placeholder={select.label} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {select.values.map((value) => (
-                        <SelectItem key={value} value={value}>
-                          {value}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )
-              }
+              render={({ field: { onChange, value } }) => (
+                <div>
+                  {selectKeys[idx] == "position" ? (
+                    <SelectInput
+                      value={value}
+                      onChange={onChange}
+                      select={select}
+                    />
+                  ) : (
+                    <div className="flex  flex-col gap-2">
+                      <Label className="text-md ">{select.label}</Label>
+                      <Select onValueChange={onChange} value={value}>
+                        <SelectTrigger className="w-full bg-white">
+                          <SelectValue placeholder={select.label} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {select.values.map((value) => (
+                            <SelectItem key={value} value={value}>
+                              {value}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+                  <span className="error">
+                    {errors[selectKeys[idx]]?.message}
+                  </span>
+                </div>
+              )}
             />
           ))}
 
@@ -98,21 +132,28 @@ export const AddWorkerForm = () => {
               key={date}
               control={control}
               name={dateKeys[idx]}
+              rules={{ required: tGlobal("forms.required") }}
               render={({ field: { onChange, value } }) => (
                 <div className="flex flex-col gap-3">
-                  <Label htmlFor={date}>{date}</Label>
+                  <Label className="text-md" htmlFor={date}>
+                    {date}
+                  </Label>
                   <Input
                     id={date}
                     type="date"
                     value={value}
                     onChange={onChange}
                   />
+                  <span className="error">
+                    {errors[dateKeys[idx]]?.message}
+                  </span>
                 </div>
               )}
             />
           ))}
         </section>
-        <Button>{t("btn")}</Button>
+        {isError && <span className="error">{tGlobal("forms.error")}</span>}
+        <Button disabled={isPending}>{t("btn")}</Button>
       </form>
       <Dialog open={show} onOpenChange={() => setShow(!show)}>
         <DialogContent className="min-w-[49vw] bg-white">
@@ -139,6 +180,6 @@ const dateKeys = [
 ];
 const selectKeys = ["gender", "position", "role", "education"];
 const fileKeys = ["photo"];
-const inputKeys = ["name", "union_ticket_number", "phone", "email"];
+const inputKeys = ["prof_id", "name", "union_ticket_number", "phone", "email"];
 
 type FormFields = Record<string, string>;

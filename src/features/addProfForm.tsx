@@ -1,5 +1,6 @@
 "use client";
 
+import { CreateProf } from "@/src/shared/api/prof";
 import {
   Button,
   Input,
@@ -9,15 +10,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/shared/ui";
+import { Label } from "@/src/shared/ui/label";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 export const AddProfForm = () => {
   const t = useTranslations("addProfForm");
+  const tGlobal = useTranslations();
+  const { mutate, isPending, isError } = useMutation({
+    mutationKey: ["addProf"],
+    mutationFn: CreateProf,
+  });
   const inputs: string[] = t.raw("inputs");
   const selects: { label: string; values: string[] }[] = t.raw("selects");
-  const { register, handleSubmit, control } = useForm<FormFields>();
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormFields>();
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     console.log(data);
+    mutate(data);
   };
   return (
     <form
@@ -25,45 +39,62 @@ export const AddProfForm = () => {
       className="flex mx-5 text-lg md:mx-0 flex-col gap-4 p-4 bg-slate-100 border border-slate-300 rounded-sm"
     >
       <h1 className="text-3xl">{t("title")}</h1>
-      {selects.map((select, idx) => (
-        <Controller
-          key={select.label}
-          control={control}
-          name={selectKeys[idx]}
-          render={({ field: { onChange, value } }) => (
-            <Select onValueChange={onChange} value={value}>
-              <SelectTrigger className="w-full bg-white">
-                <SelectValue placeholder={select.label} />
-              </SelectTrigger>
-              <SelectContent>
-                {select.values.map((value) => (
-                  <SelectItem key={value} value={value}>
-                    {value}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-        />
-      ))}
-      {inputs.map((input, idx) => (
-        <Input {...register(inputKeys[idx])} key={input} placeholder={input} />
-      ))}
+      <section className="grid grid-cols-2 gap-3">
+        {selects.map((select, idx) => (
+          <Controller
+            key={select.label}
+            control={control}
+            rules={{ required: tGlobal("forms.required") }}
+            name={selectKeys[idx]}
+            render={({ field: { onChange, value } }) => (
+              <div className="flex  flex-col gap-2">
+                <Label className="text-md ">{select.label}</Label>
+                <Select onValueChange={onChange} value={value}>
+                  <SelectTrigger className="w-full bg-white">
+                    <SelectValue placeholder={select.label} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {select.values.map((value) => (
+                      <SelectItem key={value} value={value}>
+                        {value}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <span className="error">
+                  {errors[selectKeys[idx]]?.message}
+                </span>
+              </div>
+            )}
+          />
+        ))}
+        {inputs.map((input, idx) => (
+          <Input
+            {...register(inputKeys[idx], {
+              required: tGlobal("forms.required"),
+            })}
+            error={errors[inputKeys[idx]]?.message}
+            key={input}
+            placeholder={input}
+          />
+        ))}
+      </section>
 
-      <Button>{t("btn")}</Button>
+      {isError && <span className="error">{tGlobal("forms.error")}</span>}
+      <Button disabled={isPending}>{t("btn")}</Button>
     </form>
   );
 };
 const selectKeys = [
   "industry", // Отрасль (наименование отрасли)
   "union_type", // Тип Профсоюза
+  "higher_union_org", // Вышестоящая профсоюзная организация
 ];
 
 const inputKeys = [
-  "higher_union_org", // Вышестоящая профсоюзная организация
   "union_name", // Наименование Профсоюза
-  "BIN", // БИН (12 символов)
-  "address", // Адрес (область, индекс, город, район, улица, дом, офис)
+  "bin", // БИН (12 символов)
+  "addres", // Адрес (область, индекс, город, район, улица, дом, офис)
   "phone", // Телефон
   "website", // Сайт
   "email", // e-mail

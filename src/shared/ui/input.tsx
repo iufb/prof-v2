@@ -4,10 +4,12 @@ import { cn } from "@/lib/utils";
 import { Label } from "@/src/shared/ui/label";
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  error?: string;
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, error, type, ...props }, ref) => {
     return (
       <div className="flex gap-2 flex-col">
         <Label className="text-md" htmlFor={props.placeholder}>
@@ -23,6 +25,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...props}
         />
+        <span className="text-red-400 text-sm">{error}</span>
       </div>
     );
   },

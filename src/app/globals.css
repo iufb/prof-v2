@@ -86,3 +86,8 @@ body {
     @apply bg-background text-foreground;
   }
 }
+@layer components {
+  .error {
+    @apply text-red-400 text-sm;
+  }
+}

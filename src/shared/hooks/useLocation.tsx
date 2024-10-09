@@ -7,6 +7,9 @@ export const useLocation = () => {
   const pathname = usePathname();
   const router = useRouter();
   const s = useSearchParams();
+  const getSearchParam = (key: string) => {
+    return s.get(key);
+  };
   const getAllSearchParams = (): {
     searchParams: Record<string, string | null>;
     url: string;
@@ -24,5 +27,6 @@ export const useLocation = () => {
     pathname,
     router,
     getAllSearchParams,
+    getSearchParam,
   };
 };

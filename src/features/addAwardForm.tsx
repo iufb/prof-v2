@@ -1,53 +1,75 @@
 "use client";
+import { CreateAward } from "@/src/shared/api/awards";
+import { useLocation } from "@/src/shared/hooks";
+import { queryClient } from "@/src/shared/lib/client";
+import { Award } from "@/src/shared/lib/types";
 import { Button, Input, SelectInput } from "@/src/shared/ui";
-import { Label } from "@/src/shared/ui/label";
 import { AwardsTable } from "@/src/widgets";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-type FormFields = {
-  award_type: string;
-  award_date: Date;
-};
 export const AddAwardForm = () => {
   const t = useTranslations();
-  const [awards, setAwards] = useState<Array<FormFields>>([]);
-  const { register, handleSubmit, control } = useForm<FormFields>();
-  const onSubmit: SubmitHandler<FormFields> = (data) => {
+  const { getSearchParam } = useLocation();
+  const { mutate, isPending, isError } = useMutation({
+    mutationKey: ["addAward"],
+    mutationFn: CreateAward,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getAwards"] });
+    },
+  });
+  const [awards, setAwards] = useState<Array<Award>>([]);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<Award>();
+  const onSubmit: SubmitHandler<Award> = (data) => {
     console.log(data);
+    mutate({ ...data, prof_memeber_id: getSearchParam("id") });
     setAwards([...awards, data]);
   };
 
   return (
-    <section className="p-3 rounded-md bg-slate-50 border border-slate-300 ">
+    <section className="p-3 rounded-md w-full   bg-slate-50 border border-slate-300 ">
       <h1 className="text-xl ">{t("addAwardForm.title")}</h1>
-      <form
-        className="flex flex-row  items-end gap-4"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <Controller
-          control={control}
-          name={"award_type"}
-          render={({ field: { onChange, value } }) => (
-            <div className="flex flex-col gap-2">
-              <Label className="text-md">{t("addAwardForm.award.label")}</Label>
-              <SelectInput
-                value={value}
-                select={t.raw("addAwardForm.award")}
-                onChange={onChange}
-              />
-            </div>
-          )}
-        />
-        <Input
-          placeholder={t("addAwardForm.date")}
-          type={"date"}
-          {...register("award_date")}
-        />
-        <Button className="">{t("addAwardForm.btn")}</Button>
+      <form className="" onSubmit={handleSubmit(onSubmit)}>
+        <section className=" flex flex-col    gap-4">
+          <Controller
+            control={control}
+            name={"award_type"}
+            rules={{ required: t("forms.required") }}
+            render={({ field: { onChange, value } }) => (
+              <div className="flex flex-col gap-2  ">
+                <SelectInput
+                  value={value}
+                  error={errors["award_type"]?.message}
+                  select={t.raw("addAwardForm.award")}
+                  onChange={onChange}
+                />
+              </div>
+            )}
+          />
+          <Input
+            placeholder={t("addAwardForm.date")}
+            type={"date"}
+            error={errors["award_date"]?.message}
+            {...register("award_date", { required: t("forms.required") })}
+          />
+
+          <div className="flex items-center">
+            <Button disabled={isPending} className="w-full">
+              {t("addAwardForm.btn")}
+            </Button>
+          </div>
+        </section>
+
+        {isError && <span className="error">{t("forms.error")}</span>}
       </form>
       <section className="bg-white ml-3 rounded-md border border-slate-200 mt-3">
-        <AwardsTable awards={awards} />
+        <AwardsTable />
       </section>
     </section>
   );

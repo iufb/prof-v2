@@ -1,4 +1,5 @@
 import {
+  AddAwardForm,
   AddProfCollegiateBodiesForm,
   AddProfForm,
   AddReportForm,
@@ -24,6 +25,9 @@ const getForm = (type: string) => {
       return <AddProfForm />;
     case "worker":
       return <AddWorkerForm />;
+    case "awards":
+      return <AddAwardForm />;
+
     case "soc":
       return <AddSocialPartnershipAgreementsForm />;
     case "report":

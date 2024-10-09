@@ -62,7 +62,7 @@ export const SelectInput = ({
           </Select>
         </div>
       )}
-      {error && <span className="error">{error}</span>}
+      {error && <span className="error ">{error}</span>}
     </>
   );
 };

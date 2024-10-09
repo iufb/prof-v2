@@ -10,6 +10,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  Error,
   Input,
   Select,
   SelectContent,
@@ -119,9 +120,7 @@ export const AddWorkerForm = () => {
                       </Select>
                     </div>
                   )}
-                  <span className="error">
-                    {errors[selectKeys[idx]]?.message}
-                  </span>
+                  <Error>{errors[selectKeys[idx]]?.message}</Error>
                 </div>
               )}
             />
@@ -144,15 +143,13 @@ export const AddWorkerForm = () => {
                     value={value}
                     onChange={onChange}
                   />
-                  <span className="error">
-                    {errors[dateKeys[idx]]?.message}
-                  </span>
+                  <Error>{errors[dateKeys[idx]]?.message}</Error>
                 </div>
               )}
             />
           ))}
         </section>
-        {isError && <span className="error">{tGlobal("forms.error")}</span>}
+        {isError && <Error>{tGlobal("forms.error")}</Error>}
         <Button disabled={isPending}>{t("btn")}</Button>
       </form>
       <Dialog open={show} onOpenChange={() => setShow(!show)}>

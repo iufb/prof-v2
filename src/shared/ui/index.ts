@@ -1,7 +1,9 @@
 export { Button } from "./button";
+export { Loader } from "./loader";
 export { Calendar } from "./calendar";
 export { SelectInput } from "./select-input";
 export { Input } from "./input";
+export { NotFound } from "./not-found";
 export {
   Table,
   TableHeader,
@@ -11,6 +13,7 @@ export {
   TableCell,
 } from "./table";
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./tabs";
+export { Error } from "./error";
 export {
   Select,
   SelectGroup,

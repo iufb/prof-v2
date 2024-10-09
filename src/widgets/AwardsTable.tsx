@@ -9,6 +9,9 @@ import {
   TableHead,
   TableBody,
   TableCell,
+  Loader,
+  NotFound,
+  Error,
 } from "@/src/shared/ui";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -16,6 +19,7 @@ import { useTranslations } from "next-intl";
 
 export const AwardsTable = () => {
   const t = useTranslations("addAwardForm");
+  const tGlobal = useTranslations();
   const { getSearchParam } = useLocation();
   const id = getSearchParam("id");
   const {
@@ -30,9 +34,9 @@ export const AwardsTable = () => {
     },
     enabled: !!id,
   });
-  if (isLoading) return <span>Loading ...</span>;
-  if (isError) return <span className="error">error</span>;
-
+  if (isLoading) return <Loader />;
+  if (isError) return <Error className="p-3">{tGlobal("get.error")}</Error>;
+  if (!awards || awards.length == 0) return <NotFound>{t("zero")}</NotFound>;
   return (
     <Table>
       <TableHeader>

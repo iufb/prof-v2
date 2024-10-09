@@ -3,6 +3,7 @@
 import { CreateProf } from "@/src/shared/api/prof";
 import {
   Button,
+  Error,
   Input,
   Select,
   SelectContent,
@@ -61,9 +62,7 @@ export const AddProfForm = () => {
                     ))}
                   </SelectContent>
                 </Select>
-                <span className="error">
-                  {errors[selectKeys[idx]]?.message}
-                </span>
+                <Error>{errors[selectKeys[idx]]?.message}</Error>
               </div>
             )}
           />
@@ -80,7 +79,7 @@ export const AddProfForm = () => {
         ))}
       </section>
 
-      {isError && <span className="error">{tGlobal("forms.error")}</span>}
+      {isError && <Error>{tGlobal("forms.error")}</Error>}
       <Button disabled={isPending}>{t("btn")}</Button>
     </form>
   );

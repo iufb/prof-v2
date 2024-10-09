@@ -3,11 +3,10 @@ import { CreateAward } from "@/src/shared/api/awards";
 import { useLocation } from "@/src/shared/hooks";
 import { queryClient } from "@/src/shared/lib/client";
 import { Award } from "@/src/shared/lib/types";
-import { Button, Input, SelectInput } from "@/src/shared/ui";
+import { Button, Error, Input, SelectInput } from "@/src/shared/ui";
 import { AwardsTable } from "@/src/widgets";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 export const AddAwardForm = () => {
   const t = useTranslations();
@@ -19,7 +18,6 @@ export const AddAwardForm = () => {
       queryClient.invalidateQueries({ queryKey: ["getAwards"] });
     },
   });
-  const [awards, setAwards] = useState<Array<Award>>([]);
   const {
     register,
     handleSubmit,
@@ -27,9 +25,7 @@ export const AddAwardForm = () => {
     formState: { errors },
   } = useForm<Award>();
   const onSubmit: SubmitHandler<Award> = (data) => {
-    console.log(data);
     mutate({ ...data, prof_memeber_id: getSearchParam("id") });
-    setAwards([...awards, data]);
   };
 
   return (
@@ -66,7 +62,7 @@ export const AddAwardForm = () => {
           </div>
         </section>
 
-        {isError && <span className="error">{t("forms.error")}</span>}
+        {isError && <Error>{t("forms.error")}</Error>}
       </form>
       <section className="bg-white ml-3 rounded-md border border-slate-200 mt-3">
         <AwardsTable />

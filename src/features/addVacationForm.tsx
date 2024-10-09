@@ -1,29 +1,33 @@
 "use client";
-import {
-  Button,
-  Input,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/src/shared/ui";
-import { Label } from "@/src/shared/ui/label";
+import { CreateVacation } from "@/src/shared/api/vacations";
+import { useLocation } from "@/src/shared/hooks";
+import { queryClient } from "@/src/shared/lib/client";
+import { Vacation } from "@/src/shared/lib/types";
+import { Button, Error, Input, SelectInput } from "@/src/shared/ui";
 import { VacationsTable } from "@/src/widgets";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-type FormFields = {
-  sanatorium: string;
-  vacation_date: Date;
-};
+
 export const AddVacationForm = () => {
   const t = useTranslations("addVacationForm");
-  const [vacations, setVacations] = useState<Array<FormFields>>([]);
-  const { register, handleSubmit, control } = useForm<FormFields>();
-  const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data);
-    setVacations([...vacations, data]);
+  const tGlobal = useTranslations();
+  const { getSearchParam } = useLocation();
+  const { mutate, isPending, isError } = useMutation({
+    mutationKey: ["addVacation"],
+    mutationFn: CreateVacation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getVacations"] });
+    },
+  });
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<Vacation>();
+  const onSubmit: SubmitHandler<Vacation> = (data) => {
+    mutate({ ...data, prof_memeber_id: getSearchParam("id") });
   };
 
   return (
@@ -36,33 +40,31 @@ export const AddVacationForm = () => {
         <Controller
           control={control}
           name={"sanatorium"}
+          rules={{ required: tGlobal("forms.required") }}
           render={({ field: { onChange, value } }) => (
-            <div className="flex flex-col gap-2">
-              <Label className="text-md">{t("vacation.label")}</Label>
-              <Select onValueChange={onChange} value={value}>
-                <SelectTrigger className="w-full bg-white">
-                  <SelectValue placeholder={t("vacation.label")} />
-                </SelectTrigger>
-                <SelectContent>
-                  {t.raw("vacation.values").map((value: string) => (
-                    <SelectItem key={value} value={value}>
-                      {value}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <SelectInput
+              error={errors["sanatorium"]?.message}
+              value={value}
+              onChange={onChange}
+              select={t.raw("addVacationForm.vacation.values")}
+            />
           )}
         />
         <Input
           placeholder={t("date")}
           type={"date"}
-          {...register("vacation_date")}
+          error={errors["vacation_date"]?.message}
+          {...register("vacation_date", {
+            required: tGlobal("forms.required"),
+          })}
         />
-        <Button className="">{t("btn")}</Button>
+        <Button disabled={isPending} className="">
+          {t("btn")}
+        </Button>
+        {isError && <Error>{t("forms.error")}</Error>}
       </form>
       <section className="bg-white ml-3 rounded-md border border-slate-200 mt-3">
-        <VacationsTable vacations={vacations} />
+        <VacationsTable />
       </section>
     </section>
   );

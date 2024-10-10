@@ -20,7 +20,6 @@ export const AwardsTable = () => {
   const t = useTranslations("addAwardForm");
   const tGlobal = useTranslations();
   const { getSearchParam } = useLocation();
-  const id = getSearchParam("id");
   const {
     data: awards,
     isLoading,
@@ -28,10 +27,10 @@ export const AwardsTable = () => {
   } = useQuery({
     queryKey: [`getAwards`],
     queryFn: async () => {
-      const data: Award[] = await GetAwards(id);
+      const data: Award[] = await GetAwards(getSearchParam("id"));
       return data;
     },
-    enabled: !!id,
+    enabled: !!getSearchParam("id"),
   });
   if (isLoading) return <Loader />;
   if (isError) return <Error className="p-3">{tGlobal("get.error")}</Error>;

@@ -6,6 +6,7 @@ import { Vacation } from "@/src/shared/lib/types";
 import {
   Error,
   Loader,
+  NotFound,
   Table,
   TableBody,
   TableCell,
@@ -21,7 +22,6 @@ export const VacationsTable = () => {
   const t = useTranslations("addVacationForm");
   const tGlobal = useTranslations();
   const { getSearchParam } = useLocation();
-  const id = getSearchParam("id");
   const {
     data: vacations,
     isLoading,
@@ -29,14 +29,15 @@ export const VacationsTable = () => {
   } = useQuery({
     queryKey: [`getVacations`],
     queryFn: async () => {
-      const data: Vacation[] = await GetVacations(id);
+      const data: Vacation[] = await GetVacations(getSearchParam("id"));
       return data;
     },
-    enabled: !!id,
+    enabled: !!getSearchParam("id"),
   });
   if (isLoading) return <Loader />;
   if (isError) return <Error className="p-3">{tGlobal("get.error")}</Error>;
-
+  if (!vacations || vacations.length == 0)
+    return <NotFound>{t("zero")}</NotFound>;
   return (
     <Table>
       <TableHeader>

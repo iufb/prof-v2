@@ -11,12 +11,12 @@ import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 interface EditButtonProps {
-  editForm: ReactNode;
+  addForm: ReactNode;
   label: string;
   className?: string;
 }
-export const EditButton = ({ editForm, label, className }: EditButtonProps) => {
-  const t = useTranslations("editBtn");
+export const AddButton = ({ addForm, label, className }: EditButtonProps) => {
+  const t = useTranslations("addBtn");
   return (
     <Dialog>
       <DialogTrigger
@@ -27,7 +27,7 @@ export const EditButton = ({ editForm, label, className }: EditButtonProps) => {
       >
         {t("title")} {label}
       </DialogTrigger>
-      <DialogContent className="min-w-[55vw] bg-white">
+      <DialogContent className="min-w-[55vw]  bg-white">
         <DialogHeader>
           <DialogTitle>
             {t("title")} {label}
@@ -36,7 +36,7 @@ export const EditButton = ({ editForm, label, className }: EditButtonProps) => {
             {t("desc")} {label}
           </DialogDescription>
         </DialogHeader>
-        <div>{editForm}</div>
+        <div>{addForm}</div>
       </DialogContent>
     </Dialog>
   );

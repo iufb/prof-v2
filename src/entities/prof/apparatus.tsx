@@ -1,4 +1,5 @@
 "use client";
+import { AddButton, AddWorkerForm } from "@/src/features";
 import { GetWorkersByBin } from "@/src/shared/api/worker";
 import { Link } from "@/src/shared/config/routing";
 import { useLocation } from "@/src/shared/hooks";
@@ -44,11 +45,17 @@ export const Apparatus = () => {
   return (
     <TabsContent value="apparatus">
       <section>
-        <section className="px-3 py-2 flex gap-4 bg-slate-200 border border-slate-400 rounded-md w-fit">
-          <span>{t("profApparatus.stats")}</span>
-          <span className="px-3 rounded-md font-bold bg-white">
-            {apparatusData?.length}
-          </span>
+        <section className="flex justify-between">
+          <section className="px-3 py-2 flex gap-4 bg-slate-200 border border-slate-400 rounded-md w-fit">
+            <span>{t("profApparatus.stats")}</span>
+            <span className="px-3 rounded-md font-bold bg-white">
+              {apparatusData?.length}
+            </span>
+          </section>
+          <AddButton
+            addForm={<AddWorkerForm />}
+            label={t("profApparatus.add")}
+          />
         </section>
         <Table>
           <TableHeader>

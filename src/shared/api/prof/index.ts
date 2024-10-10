@@ -8,7 +8,7 @@ export const CreateProf = (body: Record<string, string>) => {
   });
 };
 export const GetProf = (bin: string) => {
-  return customFetch({ method: "GET", path: `${path}/${bin}` });
+  return customFetch({ method: "GET", path: `${path}${bin}` });
 };
 
 export const PatchProf = ({

@@ -3,6 +3,7 @@ import { AddAwardForm } from "@/src/features/addAwardForm";
 import { AddVacationForm } from "@/src/features/addVacationForm";
 import { CreateWorker } from "@/src/shared/api/worker";
 import { useLocation } from "@/src/shared/hooks";
+import { queryClient } from "@/src/shared/lib/client";
 import {
   Button,
   Dialog,
@@ -27,12 +28,17 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 export const AddWorkerForm = () => {
   const t = useTranslations("addWorkerForm");
   const tGlobal = useTranslations();
-  const { router, pathname, getAllSearchParams } = useLocation();
+  const { router, pathname, changeSearchParam, params } = useLocation();
   const { mutateAsync, isPending, isError } = useMutation({
     mutationKey: ["addWorker"],
     mutationFn: CreateWorker,
     onSuccess: (data) => {
-      router.push(`${pathname}/${getAllSearchParams().url}&id=${data.id}`);
+      router.push(`${pathname}/${changeSearchParam("id", data.id)}`);
+    },
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({
+        queryKey: [`profApparatus ${params.id}`],
+      });
     },
   });
 
@@ -48,16 +54,17 @@ export const AddWorkerForm = () => {
     formState: { errors },
   } = useForm<FormFields>();
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data);
-    mutateAsync(data).then(() => {
-      setShow(true);
-    });
+    if (params.id) {
+      mutateAsync({ ...data, prof_id: params.id as string }).then(() => {
+        setShow(true);
+      });
+    }
   };
   return (
     <section>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex  mx-5 text-lg md:mx-0 flex-col gap-4 p-4 bg-slate-100 border border-slate-300 rounded-sm"
+        className=" max-h-[calc(80vh)] overflow-auto flex  mx-5 text-lg md:mx-0 flex-col gap-4 p-4 bg-slate-100 border border-slate-300 rounded-sm"
       >
         <h1 className="text-3xl">{t("title")}</h1>
         <section className="grid grid-cols-2 gap-4">
@@ -177,6 +184,6 @@ const dateKeys = [
 ];
 const selectKeys = ["gender", "position", "role", "education"];
 const fileKeys = ["photo"];
-const inputKeys = ["prof_id", "name", "union_ticket_number", "phone", "email"];
+const inputKeys = ["name", "union_ticket_number", "phone", "email"];
 
 type FormFields = Record<string, string>;

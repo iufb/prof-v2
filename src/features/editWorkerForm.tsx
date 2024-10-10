@@ -1,16 +1,8 @@
 "use client";
-import { AddAwardForm } from "@/src/features/addAwardForm";
-import { AddVacationForm } from "@/src/features/addVacationForm";
-import { CreateWorker } from "@/src/shared/api/worker";
-import { useLocation } from "@/src/shared/hooks";
+import { PatchWorker } from "@/src/shared/api/worker";
 import { queryClient } from "@/src/shared/lib/client";
 import {
   Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   Error,
   Input,
   Select,
@@ -23,27 +15,27 @@ import {
 import { Label } from "@/src/shared/ui/label";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-export const AddWorkerForm = () => {
-  const t = useTranslations("addWorkerForm");
+export const EditWorkerForm = ({
+  workerData,
+}: {
+  workerData: Record<string, string>;
+}) => {
+  console.log(workerData);
+
+  const t = useTranslations("workerForm");
   const tGlobal = useTranslations();
-  const { router, pathname, changeSearchParam, params } = useLocation();
-  const { mutateAsync, isPending, isError } = useMutation({
-    mutationKey: ["addWorker"],
-    mutationFn: CreateWorker,
-    onSuccess: (data) => {
-      router.push(`${pathname}/${changeSearchParam("id", data.id)}`);
-    },
+  const { mutate, isPending, isError } = useMutation({
+    mutationKey: ["editWorker"],
+    mutationFn: PatchWorker,
     onSettled: async () => {
       return await queryClient.invalidateQueries({
-        queryKey: [`profApparatus ${params.id}`],
+        queryKey: [`worker ${workerData.id}`],
       });
     },
   });
 
   const inputs: string[] = t.raw("inputs");
-  const [show, setShow] = useState(false);
   const selects: { label: string; values: string[] }[] = t.raw("selects");
   const dates: string[] = t.raw("dates");
   const files: string[] = t.raw("files");
@@ -52,13 +44,9 @@ export const AddWorkerForm = () => {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<FormFields>();
+  } = useForm<FormFields>({ defaultValues: workerData });
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    if (params.id) {
-      mutateAsync({ ...data, prof_id: params.id as string }).then(() => {
-        setShow(true);
-      });
-    }
+    mutate({ body: data, id: workerData.id });
   };
   return (
     <section>
@@ -66,7 +54,7 @@ export const AddWorkerForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className=" max-h-[calc(80vh)] overflow-auto flex  mx-5 text-lg md:mx-0 flex-col gap-4 p-4 bg-slate-100 border border-slate-300 rounded-sm"
       >
-        <h1 className="text-3xl">{t("add.title")}</h1>
+        <h1 className="text-3xl">{t("edit.title")}</h1>
         <section className="grid grid-cols-2 gap-4">
           {files.map((file, idx) => (
             <Controller
@@ -157,22 +145,8 @@ export const AddWorkerForm = () => {
           ))}
         </section>
         {isError && <Error>{tGlobal("forms.error")}</Error>}
-        <Button disabled={isPending}>{t("add.btn")}</Button>
+        <Button disabled={isPending}>{t("edit.btn")}</Button>
       </form>
-      <Dialog open={show} onOpenChange={() => setShow(!show)}>
-        <DialogContent className="min-w-[49vw] bg-white">
-          <DialogHeader>
-            <DialogTitle>{t("addictionalData.title")}</DialogTitle>
-            <DialogDescription className="w-full">
-              {t("addictionalData.desc")}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col gap-4">
-            <AddAwardForm />
-            <AddVacationForm />
-          </div>
-        </DialogContent>
-      </Dialog>
     </section>
   );
 };

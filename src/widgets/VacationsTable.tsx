@@ -18,7 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
 
-export const VacationsTable = () => {
+export const VacationsTable = ({ id }: { id?: string }) => {
   const t = useTranslations("addVacationForm");
   const tGlobal = useTranslations();
   const { getSearchParam } = useLocation();
@@ -29,10 +29,10 @@ export const VacationsTable = () => {
   } = useQuery({
     queryKey: [`getVacations`],
     queryFn: async () => {
-      const data: Vacation[] = await GetVacations(getSearchParam("id"));
+      const data: Vacation[] = await GetVacations(id ?? getSearchParam("id"));
       return data;
     },
-    enabled: !!getSearchParam("id"),
+    enabled: !!getSearchParam("id") || !!id,
   });
   if (isLoading) return <Loader />;
   if (isError) return <Error className="p-3">{tGlobal("get.error")}</Error>;

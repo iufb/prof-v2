@@ -7,6 +7,19 @@ export const CreateWorker = (body: Record<string, string>) => {
     body: { multipart: body },
   });
 };
+export const PatchWorker = ({
+  body,
+  id,
+}: {
+  body: Record<string, string>;
+  id: string;
+}) => {
+  return customFetch({
+    method: "PATCH",
+    path: `prof-member-view/${id}`,
+    body: { multipart: body },
+  });
+};
 export const GetWorker = (id: string) => {
   return customFetch({
     method: "GET",

@@ -21,7 +21,7 @@ export const EditButton = ({ editForm, label, className }: EditButtonProps) => {
     <Dialog>
       <DialogTrigger
         className={clsx(
-          "py-2 px-3 font-bold   rounded-md bg-gray-950 text-white text-sm hover:opacity-70",
+          "py-2 px-3 font-bold h-fit   rounded-md bg-gray-950 text-white text-sm hover:opacity-70",
           className,
         )}
       >

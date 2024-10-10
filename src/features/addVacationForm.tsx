@@ -9,7 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
-export const AddVacationForm = () => {
+export const AddVacationForm = ({ id }: { id?: string }) => {
   const t = useTranslations("addVacationForm");
   const tGlobal = useTranslations();
   const { getSearchParam } = useLocation();
@@ -29,7 +29,7 @@ export const AddVacationForm = () => {
     formState: { errors },
   } = useForm<Vacation>();
   const onSubmit: SubmitHandler<Vacation> = (data) => {
-    mutate({ ...data, prof_memeber_id: getSearchParam("id") });
+    mutate({ ...data, prof_memeber_id: id ?? getSearchParam("id") });
   };
 
   return (
@@ -65,7 +65,7 @@ export const AddVacationForm = () => {
         </section>
       </form>
       <section className="bg-white ml-3 rounded-md border border-slate-200 mt-3">
-        <VacationsTable />
+        <VacationsTable id={id} />
       </section>
     </section>
   );

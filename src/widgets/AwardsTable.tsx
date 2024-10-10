@@ -16,7 +16,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
-export const AwardsTable = () => {
+export const AwardsTable = ({ id }: { id?: string }) => {
   const t = useTranslations("addAwardForm");
   const tGlobal = useTranslations();
   const { getSearchParam } = useLocation();
@@ -27,10 +27,10 @@ export const AwardsTable = () => {
   } = useQuery({
     queryKey: [`getAwards`],
     queryFn: async () => {
-      const data: Award[] = await GetAwards(getSearchParam("id"));
+      const data: Award[] = await GetAwards(id ?? getSearchParam("id"));
       return data;
     },
-    enabled: !!getSearchParam("id"),
+    enabled: !!getSearchParam("id") || !!id,
   });
   if (isLoading) return <Loader />;
   if (isError) return <Error className="p-3">{tGlobal("get.error")}</Error>;

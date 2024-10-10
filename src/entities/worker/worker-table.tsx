@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  AddAwardForm,
+  AddVacationForm,
+  EditButton,
+  EditWorkerForm,
+} from "@/src/features";
 import { GetWorker } from "@/src/shared/api/worker";
 import { DeleteFieldsFromObj } from "@/src/shared/lib/utils";
 import { Error, Loader } from "@/src/shared/ui";
@@ -18,6 +24,8 @@ export const WorkerTable = ({ id }: { id: string }) => {
     queryKey: [`worker ${id}`],
     queryFn: async () => {
       const data = await GetWorker(id);
+      console.log(data);
+
       return data;
     },
   });
@@ -44,10 +52,16 @@ export const WorkerTable = ({ id }: { id: string }) => {
           height={200}
           alt="photo"
         />
+        <EditButton
+          label={t("worker.edit")}
+          editForm={<EditWorkerForm workerData={workerData} />}
+        />
       </section>
       {workerData && (
         <VerticalTable labels={t.raw("worker.table")} values={tableValues} />
       )}
+      <AddAwardForm id={id} />
+      <AddVacationForm id={id} />
     </section>
   );
 };

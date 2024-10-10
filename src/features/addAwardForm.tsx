@@ -8,7 +8,7 @@ import { AwardsTable } from "@/src/widgets";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-export const AddAwardForm = () => {
+export const AddAwardForm = ({ id }: { id?: string }) => {
   const t = useTranslations();
   const { getSearchParam } = useLocation();
   const { mutate, isPending, isError } = useMutation({
@@ -25,7 +25,7 @@ export const AddAwardForm = () => {
     formState: { errors },
   } = useForm<Award>();
   const onSubmit: SubmitHandler<Award> = (data) => {
-    mutate({ ...data, prof_memeber_id: getSearchParam("id") });
+    mutate({ ...data, prof_memeber_id: id ?? getSearchParam("id") });
   };
 
   return (
@@ -65,7 +65,7 @@ export const AddAwardForm = () => {
         {isError && <Error>{t("forms.error")}</Error>}
       </form>
       <section className="bg-white ml-3 rounded-md border border-slate-200 mt-3">
-        <AwardsTable />
+        <AwardsTable id={id} />
       </section>
     </section>
   );

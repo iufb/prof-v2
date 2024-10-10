@@ -7,3 +7,13 @@ export const CreateWorker = (body: Record<string, string>) => {
     body: { multipart: body },
   });
 };
+
+export const GetWorkersByBin = (bin: string) => {
+  return customFetch({
+    method: "GET",
+    path: `prof-member-view`,
+    query: {
+      prof_id: bin,
+    },
+  });
+};

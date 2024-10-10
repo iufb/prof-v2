@@ -1,12 +1,10 @@
 "use client";
-import { About } from "@/src/entities/prof";
+import { About, Apparatus } from "@/src/entities/prof";
+import { useLocation } from "@/src/shared/hooks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/shared/ui";
 import { useTranslations } from "next-intl";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 export const ProfInfo = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const { router, pathname, getSearchParam } = useLocation();
   const t = useTranslations("navbar");
   const links: Array<{
     label: string;
@@ -17,9 +15,9 @@ export const ProfInfo = () => {
   };
 
   return (
-    <section className="p-5 border border-slate-300  rounded-sm min-h-[calc(100svh-90px)]">
-      <Tabs defaultValue={searchParams.get("type") ?? "about"}>
-        <TabsList className="gap-4 py-8 px-5">
+    <section className="px-5 pt-5 mb-10 border border-slate-300  rounded-sm min-h-[calc(100svh-90px)] h-full">
+      <Tabs defaultValue={getSearchParam("type") ?? "about"} className="">
+        <TabsList className="gap-4 py-8 px-5 border border-slate-400">
           {links.map((link) => (
             <TabsTrigger
               key={link.href}
@@ -46,13 +44,7 @@ const CollegiateBodies = () => {
     </TabsContent>
   );
 };
-const Apparatus = () => {
-  return (
-    <TabsContent value="apparatus">
-      Make changes to your account here. apparatus
-    </TabsContent>
-  );
-};
+
 const Partners = () => {
   return (
     <TabsContent value="partners">

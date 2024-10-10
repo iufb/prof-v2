@@ -1,6 +1,7 @@
 export { LoginForm } from "./loginForm";
 export { EditButton } from "./editButton";
 export { AddProfForm } from "./addProfForm";
+export { EditProfForm } from "./editProfForm";
 export { AddWorkerForm } from "./addWorkerForm";
 export { AddSocialPartnershipAgreementsForm } from "./addSocialPartnershipAgreementsForm";
 

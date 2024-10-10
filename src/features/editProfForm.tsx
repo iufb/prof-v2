@@ -1,7 +1,6 @@
 "use client";
-
-import { CreateProf } from "@/src/shared/api/prof";
-import { useLocation } from "@/src/shared/hooks";
+import { PatchProf } from "@/src/shared/api/prof";
+import { queryClient } from "@/src/shared/lib/client";
 import {
   Button,
   Error,
@@ -15,16 +14,21 @@ import {
 import { Label } from "@/src/shared/ui/label";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-export const AddProfForm = () => {
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+export const EditProfForm = ({
+  profData,
+}: {
+  profData: Record<string, string>;
+}) => {
   const t = useTranslations("profForm");
   const tGlobal = useTranslations();
-  const { router } = useLocation();
   const { mutate, isPending, isError } = useMutation({
-    mutationKey: ["addProf"],
-    mutationFn: CreateProf,
-    onSuccess: (data) => {
-      router.push(`prof/${data.bin}?type=about`);
+    mutationKey: ["editProf"],
+    mutationFn: PatchProf,
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({
+        queryKey: [`profAbout ${profData.bin}`],
+      });
     },
   });
   const inputs: string[] = t.raw("inputs");
@@ -34,17 +38,17 @@ export const AddProfForm = () => {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<FormFields>();
+  } = useForm<FormFields>({ defaultValues: profData });
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     console.log(data);
-    mutate(data);
+    mutate({ body: data, bin: profData.bin });
   };
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="flex mx-5 text-lg md:mx-0 flex-col gap-4 p-4 bg-slate-100 border border-slate-300 rounded-sm"
     >
-      <h1 className="text-3xl">{t("add.title")}</h1>
+      <h1 className="text-3xl">{t("edit.title")}</h1>
       <section className="grid grid-cols-2 gap-3">
         {selects.map((select, idx) => (
           <Controller
@@ -85,7 +89,7 @@ export const AddProfForm = () => {
       </section>
 
       {isError && <Error>{tGlobal("forms.error")}</Error>}
-      <Button disabled={isPending}>{t("add.btn")}</Button>
+      <Button disabled={isPending}>{t("edit.btn")}</Button>
     </form>
   );
 };

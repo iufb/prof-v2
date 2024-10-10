@@ -1,5 +1,5 @@
 "use client";
-import { AddProfForm, EditButton } from "@/src/features";
+import { EditButton, EditProfForm } from "@/src/features";
 import { GetProf } from "@/src/shared/api/prof";
 import { Error, Loader, TabsContent } from "@/src/shared/ui";
 import { VerticalTable } from "@/src/shared/ui/vertical-table";
@@ -14,7 +14,7 @@ export const About = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["profAbout"],
+    queryKey: [`profAbout ${bin}`],
     queryFn: async () => {
       const data = await GetProf(bin as string);
       return data;
@@ -27,16 +27,18 @@ export const About = () => {
   return (
     <TabsContent value="about">
       <section className="grid gap-3">
-        <EditButton
-          className="justify-self-end"
-          editForm={<AddProfForm />}
-          label={t("profAbout.edit")}
-        />
         {profData && (
-          <VerticalTable
-            labels={t.raw("profAbout.table")}
-            values={Object.values(profData)}
-          />
+          <>
+            <EditButton
+              className="justify-self-end"
+              editForm={<EditProfForm profData={profData} />}
+              label={t("profAbout.edit")}
+            />
+            <VerticalTable
+              labels={t.raw("profAbout.table")}
+              values={Object.values(profData)}
+            />
+          </>
         )}
       </section>
     </TabsContent>

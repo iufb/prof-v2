@@ -14,8 +14,8 @@ export const AddAwardForm = () => {
   const { mutate, isPending, isError } = useMutation({
     mutationKey: ["addAward"],
     mutationFn: CreateAward,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getAwards"] });
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({ queryKey: ["getAwards"] });
     },
   });
   const {

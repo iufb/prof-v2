@@ -16,7 +16,6 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
-
 export const AwardsTable = () => {
   const t = useTranslations("addAwardForm");
   const tGlobal = useTranslations();

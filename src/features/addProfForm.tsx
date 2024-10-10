@@ -1,6 +1,7 @@
 "use client";
 
 import { CreateProf } from "@/src/shared/api/prof";
+import { useLocation } from "@/src/shared/hooks";
 import {
   Button,
   Error,
@@ -18,9 +19,13 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 export const AddProfForm = () => {
   const t = useTranslations("addProfForm");
   const tGlobal = useTranslations();
+  const { router } = useLocation();
   const { mutate, isPending, isError } = useMutation({
     mutationKey: ["addProf"],
     mutationFn: CreateProf,
+    onSuccess: (data) => {
+      router.push(`prof/${data.bin}?type=about`);
+    },
   });
   const inputs: string[] = t.raw("inputs");
   const selects: { label: string; values: string[] }[] = t.raw("selects");

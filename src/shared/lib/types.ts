@@ -10,3 +10,12 @@ export type Vacation = {
   vacation_date: Date;
   prof_memeber_id: string | null;
 };
+export type Report = {
+  report_type: string;
+  creator: string;
+  document: string;
+  status: string;
+  submission_date: string;
+  acceptance_date: string;
+  prof_id: string;
+};

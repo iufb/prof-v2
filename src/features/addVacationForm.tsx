@@ -16,8 +16,10 @@ export const AddVacationForm = () => {
   const { mutate, isPending, isError } = useMutation({
     mutationKey: ["addVacation"],
     mutationFn: CreateVacation,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getVacations"] });
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({
+        queryKey: ["getVacations"],
+      });
     },
   });
   const {
@@ -31,37 +33,36 @@ export const AddVacationForm = () => {
   };
 
   return (
-    <section className="p-3 rounded-md bg-slate-50 border border-slate-300 ">
+    <section className="p-3 rounded-md bg-slate-50 w-full border border-slate-300 ">
       <h1 className="text-xl ">{t("title")}</h1>
-      <form
-        className="flex flex-row  items-end gap-4"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <Controller
-          control={control}
-          name={"sanatorium"}
-          rules={{ required: tGlobal("forms.required") }}
-          render={({ field: { onChange, value } }) => (
-            <SelectInput
-              error={errors["sanatorium"]?.message}
-              value={value}
-              onChange={onChange}
-              select={t.raw("addVacationForm.vacation.values")}
-            />
-          )}
-        />
-        <Input
-          placeholder={t("date")}
-          type={"date"}
-          error={errors["vacation_date"]?.message}
-          {...register("vacation_date", {
-            required: tGlobal("forms.required"),
-          })}
-        />
-        <Button disabled={isPending} className="">
-          {t("btn")}
-        </Button>
-        {isError && <Error>{t("forms.error")}</Error>}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <section className=" flex flex-col    gap-4">
+          <Controller
+            control={control}
+            name={"sanatorium"}
+            rules={{ required: tGlobal("forms.required") }}
+            render={({ field: { onChange, value } }) => (
+              <SelectInput
+                error={errors["sanatorium"]?.message}
+                value={value}
+                onChange={onChange}
+                select={t.raw("vacation")}
+              />
+            )}
+          />
+          <Input
+            placeholder={t("date")}
+            type={"date"}
+            error={errors["vacation_date"]?.message}
+            {...register("vacation_date", {
+              required: tGlobal("forms.required"),
+            })}
+          />
+          <Button disabled={isPending} className="">
+            {t("btn")}
+          </Button>
+          {isError && <Error>{t("forms.error")}</Error>}
+        </section>
       </form>
       <section className="bg-white ml-3 rounded-md border border-slate-200 mt-3">
         <VacationsTable />

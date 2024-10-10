@@ -27,7 +27,7 @@ export const VacationsTable = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: [`getAwards`],
+    queryKey: [`getVacations`],
     queryFn: async () => {
       const data: Vacation[] = await GetVacations(id);
       return data;

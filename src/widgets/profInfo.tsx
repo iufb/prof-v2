@@ -1,4 +1,5 @@
 "use client";
+import { About } from "@/src/entities/prof";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/shared/ui";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -36,11 +37,6 @@ export const ProfInfo = () => {
         <Partners />
       </Tabs>
     </section>
-  );
-};
-const About = () => {
-  return (
-    <TabsContent value="about">Make changes to your account here.</TabsContent>
   );
 };
 const CollegiateBodies = () => {

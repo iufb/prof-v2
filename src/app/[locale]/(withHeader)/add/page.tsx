@@ -4,6 +4,7 @@ import {
   AddProfForm,
   AddReportForm,
   AddSocialPartnershipAgreementsForm,
+  AddVacationForm,
   AddWorkerForm,
 } from "@/src/features";
 
@@ -27,7 +28,8 @@ const getForm = (type: string) => {
       return <AddWorkerForm />;
     case "awards":
       return <AddAwardForm />;
-
+    case "vacation":
+      return <AddVacationForm />;
     case "soc":
       return <AddSocialPartnershipAgreementsForm />;
     case "report":

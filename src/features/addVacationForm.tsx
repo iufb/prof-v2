@@ -18,7 +18,7 @@ export const AddVacationForm = ({ id }: { id?: string }) => {
     mutationFn: CreateVacation,
     onSettled: async () => {
       return await queryClient.invalidateQueries({
-        queryKey: ["getVacations"],
+        queryKey: [`getVacations ${id}`],
       });
     },
   });

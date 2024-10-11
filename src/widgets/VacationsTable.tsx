@@ -1,9 +1,12 @@
 "use client";
 
-import { GetVacations } from "@/src/shared/api/vacations";
-import { useLocation } from "@/src/shared/hooks";
+import { DeleteButton } from "@/src/features";
+import { DeleteVacation, GetVacations } from "@/src/shared/api/vacations";
+import { useLocation, usePermission } from "@/src/shared/hooks";
+import { queryClient } from "@/src/shared/lib/client";
 import { Vacation } from "@/src/shared/lib/types";
 import {
+  Button,
   Error,
   Loader,
   NotFound,
@@ -14,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/shared/ui";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
 
@@ -27,13 +30,24 @@ export const VacationsTable = ({ id }: { id?: string }) => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: [`getVacations`],
+    queryKey: [`getVacations ${id ?? getSearchParam("id")}`],
     queryFn: async () => {
       const data: Vacation[] = await GetVacations(id ?? getSearchParam("id"));
       return data;
     },
     enabled: !!getSearchParam("id") || !!id,
   });
+  const { isAdmin } = usePermission();
+  const { mutate, isPending } = useMutation({
+    mutationKey: [],
+    mutationFn: DeleteVacation,
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({
+        queryKey: [`getVacations ${id ?? getSearchParam("id")}`],
+      });
+    },
+  });
+
   if (isLoading) return <Loader />;
   if (isError) return <Error className="p-3">{tGlobal("get.error")}</Error>;
   if (!vacations || vacations.length == 0)
@@ -44,15 +58,31 @@ export const VacationsTable = ({ id }: { id?: string }) => {
         <TableRow>
           <TableHead>{t("vacation.label")}</TableHead>
           <TableHead className="text-right">{t("date")}</TableHead>
+          {isAdmin && (
+            <TableHead className="text-right">
+              {tGlobal("deleteBtn.label")}
+            </TableHead>
+          )}
         </TableRow>
       </TableHeader>
       <TableBody>
         {vacations?.map((a, idx) => (
           <TableRow key={idx}>
             <TableCell>{a.sanatorium}</TableCell>
-            <TableCell className="text-right">
+            <TableCell className="text-center">
               {dayjs(a.vacation_date).format("DD/MM/YYYY")}
             </TableCell>
+            {isAdmin && (
+              <TableCell className="text-end">
+                <DeleteButton
+                  btn={
+                    <Button onClick={() => mutate(a.id)} disabled={isPending}>
+                      {tGlobal("deleteBtn.label")}
+                    </Button>
+                  }
+                />
+              </TableCell>
+            )}
           </TableRow>
         ))}
       </TableBody>

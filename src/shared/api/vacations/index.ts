@@ -16,3 +16,9 @@ export const GetVacations = (id: string | null) => {
     },
   });
 };
+export const DeleteVacation = (id: string) => {
+  return customFetch({
+    method: "DELETE",
+    path: `${path}${id}/`,
+  });
+};

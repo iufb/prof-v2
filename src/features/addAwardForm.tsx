@@ -15,7 +15,9 @@ export const AddAwardForm = ({ id }: { id?: string }) => {
     mutationKey: ["addAward"],
     mutationFn: CreateAward,
     onSettled: async () => {
-      return await queryClient.invalidateQueries({ queryKey: ["getAwards"] });
+      return await queryClient.invalidateQueries({
+        queryKey: [`getAwards ${id}`],
+      });
     },
   });
   const {

@@ -1,19 +1,22 @@
 "use client";
-import { GetAwards } from "@/src/shared/api/awards";
-import { useLocation } from "@/src/shared/hooks";
+import { DeleteButton } from "@/src/features";
+import { DeleteAward, GetAwards } from "@/src/shared/api/awards";
+import { useLocation, usePermission } from "@/src/shared/hooks";
+import { queryClient } from "@/src/shared/lib/client";
 import { Award } from "@/src/shared/lib/types";
 import {
-  Table,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
+  Button,
+  Error,
   Loader,
   NotFound,
-  Error,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/src/shared/ui";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useTranslations } from "next-intl";
 export const AwardsTable = ({ id }: { id?: string }) => {
@@ -25,12 +28,22 @@ export const AwardsTable = ({ id }: { id?: string }) => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: [`getAwards`],
+    queryKey: [`getAwards ${id ?? getSearchParam("id")}`],
     queryFn: async () => {
       const data: Award[] = await GetAwards(id ?? getSearchParam("id"));
       return data;
     },
     enabled: !!getSearchParam("id") || !!id,
+  });
+  const { isAdmin } = usePermission();
+  const { mutate, isPending } = useMutation({
+    mutationKey: [],
+    mutationFn: DeleteAward,
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({
+        queryKey: [`getAwards ${id ?? getSearchParam("id")}`],
+      });
+    },
   });
   if (isLoading) return <Loader />;
   if (isError) return <Error className="p-3">{tGlobal("get.error")}</Error>;
@@ -40,7 +53,10 @@ export const AwardsTable = ({ id }: { id?: string }) => {
       <TableHeader>
         <TableRow>
           <TableHead>{t("award.label")}</TableHead>
-          <TableHead className="text-right">{t("date")}</TableHead>
+          <TableHead className="text-center">{t("date")}</TableHead>
+          {isAdmin && (
+            <TableHead className="text-right">{t("delete")}</TableHead>
+          )}
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -50,6 +66,17 @@ export const AwardsTable = ({ id }: { id?: string }) => {
             <TableCell className="text-right">
               {dayjs(a.award_date).format("DD/MM/YYYY")}
             </TableCell>
+            {isAdmin && (
+              <TableCell className="text-end">
+                <DeleteButton
+                  btn={
+                    <Button onClick={() => mutate(a.id)} disabled={isPending}>
+                      {tGlobal("deleteBtn.label")}
+                    </Button>
+                  }
+                />
+              </TableCell>
+            )}
           </TableRow>
         ))}
       </TableBody>

@@ -18,3 +18,9 @@ export const GetAwards = (id: string | null) => {
     },
   });
 };
+export const DeleteAward = (id: string) => {
+  return customFetch({
+    method: "DELETE",
+    path: `${path}${id}/`,
+  });
+};

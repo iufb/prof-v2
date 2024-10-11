@@ -1,4 +1,6 @@
 export { Button } from "./button";
+
+export { Alert, AlertTitle, AlertDescription } from "./alert";
 export { Loader } from "./loader";
 export { Calendar } from "./calendar";
 export { SelectInput } from "./select-input";
@@ -49,3 +51,16 @@ export {
   DialogTitle,
   DialogDescription,
 } from "./dialog";
+export {
+  AlertDialog,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "./alert-dialog";

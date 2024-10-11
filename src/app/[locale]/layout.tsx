@@ -35,7 +35,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
-          <main className="max-w-[1400px] mx-auto">
+          <main className="max-w-[87.5rem] mx-auto">
             <QueryProvider>{children}</QueryProvider>
           </main>
         </NextIntlClientProvider>

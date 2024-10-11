@@ -10,7 +10,7 @@ import { getTranslations } from "next-intl/server";
 
 export const Header = () => {
   return (
-    <header className="max-w-[1400px] mx-auto h-20 text-md flex items-center justify-start">
+    <header className="max-w-[87.5rem] mx-auto h-20 text-md flex items-center justify-start">
       <Navbar />
     </header>
   );

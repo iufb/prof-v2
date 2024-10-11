@@ -52,7 +52,7 @@ export const EditWorkerForm = ({
     <section>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className=" max-h-[calc(80vh)] overflow-auto flex  mx-5 text-lg md:mx-0 flex-col gap-4 p-4 bg-slate-100 border border-slate-300 rounded-sm"
+        className=" max-h-[calc(80vh)] overflow-hidden  hover:overflow-auto flex  mx-5 text-lg md:mx-0 flex-col gap-4 p-4 bg-slate-100 border border-slate-300 rounded-sm"
       >
         <h1 className="text-3xl">{t("edit.title")}</h1>
         <section className="grid grid-cols-2 gap-4">

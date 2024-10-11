@@ -1,4 +1,5 @@
 "use client";
+import { usePermission } from "@/src/shared/hooks";
 import {
   Dialog,
   DialogContent,
@@ -17,6 +18,8 @@ interface EditButtonProps {
 }
 export const EditButton = ({ editForm, label, className }: EditButtonProps) => {
   const t = useTranslations("editBtn");
+  const { isAdmin } = usePermission();
+  if (!isAdmin) return <></>;
   return (
     <Dialog>
       <DialogTrigger

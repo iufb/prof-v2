@@ -1,4 +1,5 @@
 "use client";
+import { useToast } from "@/hooks/use-toast";
 import { CreateCollegianBodies } from "@/src/shared/api/collegian-bodies";
 import { queryClient } from "@/src/shared/lib/client";
 import {
@@ -29,10 +30,17 @@ export const AddProfCollegiateBodiesForm = () => {
     control,
     formState: { errors },
   } = useForm<FormFields>();
-
+  const { toast } = useToast();
   const { mutate, isPending, isError } = useMutation({
     mutationKey: ["createBodies"],
     mutationFn: CreateCollegianBodies,
+    onSuccess: () => {
+      toast({ title: tGlobal("toast.create") });
+    },
+    onError: () => {
+      toast({ title: tGlobal("toast.error") });
+    },
+
     onSettled: async () => {
       return await queryClient.invalidateQueries({
         queryKey: [`bodies ${id}`],

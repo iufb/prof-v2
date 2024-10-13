@@ -1,4 +1,5 @@
 "use client";
+import { useToast } from "@/hooks/use-toast";
 import { PatchWorker } from "@/src/shared/api/worker";
 import { queryClient } from "@/src/shared/lib/client";
 import {
@@ -21,13 +22,19 @@ export const EditWorkerForm = ({
 }: {
   workerData: Record<string, string>;
 }) => {
-  console.log(workerData.id);
-
   const t = useTranslations("workerForm");
   const tGlobal = useTranslations();
+  const { toast } = useToast();
   const { mutate, isPending, isError } = useMutation({
     mutationKey: ["editWorker"],
     mutationFn: PatchWorker,
+    onSuccess: () => {
+      toast({ title: tGlobal("toast.edit") });
+    },
+    onError: () => {
+      toast({ title: tGlobal("toast.error") });
+    },
+
     onSettled: async () => {
       return await queryClient.invalidateQueries({
         queryKey: [`worker ${workerData.id}`],

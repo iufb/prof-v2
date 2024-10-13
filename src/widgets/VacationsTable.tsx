@@ -1,5 +1,6 @@
 "use client";
 
+import { useToast } from "@/hooks/use-toast";
 import { DeleteButton } from "@/src/features";
 import { DeleteVacation, GetVacations } from "@/src/shared/api/vacations";
 import { useLocation, usePermission } from "@/src/shared/hooks";
@@ -38,9 +39,17 @@ export const VacationsTable = ({ id }: { id?: string }) => {
     enabled: !!getSearchParam("id") || !!id,
   });
   const { isAdmin } = usePermission();
+  const { toast } = useToast();
   const { mutate, isPending } = useMutation({
     mutationKey: [],
     mutationFn: DeleteVacation,
+    onSuccess: () => {
+      toast({ title: tGlobal("toast.delete") });
+    },
+    onError: () => {
+      toast({ title: tGlobal("toast.error") });
+    },
+
     onSettled: async () => {
       return await queryClient.invalidateQueries({
         queryKey: [`getVacations ${id ?? getSearchParam("id")}`],

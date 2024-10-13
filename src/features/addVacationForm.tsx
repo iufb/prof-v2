@@ -1,4 +1,5 @@
 "use client";
+import { useToast } from "@/hooks/use-toast";
 import { CreateVacation } from "@/src/shared/api/vacations";
 import { useLocation, usePermission } from "@/src/shared/hooks";
 import { queryClient } from "@/src/shared/lib/client";
@@ -13,9 +14,17 @@ export const AddVacationForm = ({ id }: { id?: string }) => {
   const t = useTranslations("addVacationForm");
   const tGlobal = useTranslations();
   const { getSearchParam } = useLocation();
+  const { toast } = useToast();
   const { mutate, isPending, isError } = useMutation({
     mutationKey: ["addVacation"],
     mutationFn: CreateVacation,
+    onSuccess: () => {
+      toast({ title: tGlobal("toast.create") });
+    },
+    onError: () => {
+      toast({ title: tGlobal("toast.error") });
+    },
+
     onSettled: async () => {
       return await queryClient.invalidateQueries({
         queryKey: [`getVacations ${id}`],

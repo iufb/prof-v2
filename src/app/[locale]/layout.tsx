@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import localFont from "next/font/local";
 import "../globals.css";
+import { Toaster } from "@/src/shared/ui";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -36,7 +37,10 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <main className="max-w-[87.5rem] mx-auto">
-            <QueryProvider>{children}</QueryProvider>
+            <QueryProvider>
+              <Toaster />
+              {children}
+            </QueryProvider>
           </main>
         </NextIntlClientProvider>
       </body>

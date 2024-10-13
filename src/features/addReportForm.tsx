@@ -1,4 +1,5 @@
 "use client";
+import { useToast } from "@/hooks/use-toast";
 import { CreateReport } from "@/src/shared/api/reports";
 import {
   Button,
@@ -25,9 +26,16 @@ export const AddReportForm = () => {
     control,
     formState: { errors },
   } = useForm<FormFields>();
+  const { toast } = useToast();
   const { mutate, isPending, isError } = useMutation({
     mutationKey: ["addReport"],
     mutationFn: CreateReport,
+    onSuccess: () => {
+      toast({ title: tGlobal("toast.create") });
+    },
+    onError: () => {
+      toast({ title: tGlobal("toast.error") });
+    },
   });
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     console.log(data);

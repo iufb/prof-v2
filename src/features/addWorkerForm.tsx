@@ -1,4 +1,5 @@
 "use client";
+import { useToast } from "@/hooks/use-toast";
 import { AddAwardForm } from "@/src/features/addAwardForm";
 import { AddVacationForm } from "@/src/features/addVacationForm";
 import { CreateWorker } from "@/src/shared/api/worker";
@@ -28,12 +29,17 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 export const AddWorkerForm = () => {
   const t = useTranslations("workerForm");
   const tGlobal = useTranslations();
+  const { toast } = useToast();
   const { router, pathname, changeSearchParam, params } = useLocation();
   const { mutateAsync, isPending, isError } = useMutation({
     mutationKey: ["addWorker"],
     mutationFn: CreateWorker,
     onSuccess: (data) => {
+      toast({ title: tGlobal("toast.create") });
       router.push(`${pathname}/${changeSearchParam("id", data.id)}`);
+    },
+    onError: () => {
+      toast({ title: tGlobal("toast.error") });
     },
     onSettled: async () => {
       return await queryClient.invalidateQueries({

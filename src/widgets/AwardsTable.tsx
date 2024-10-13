@@ -1,4 +1,5 @@
 "use client";
+import { useToast } from "@/hooks/use-toast";
 import { DeleteButton } from "@/src/features";
 import { DeleteAward, GetAwards } from "@/src/shared/api/awards";
 import { useLocation, usePermission } from "@/src/shared/hooks";
@@ -36,9 +37,17 @@ export const AwardsTable = ({ id }: { id?: string }) => {
     enabled: !!getSearchParam("id") || !!id,
   });
   const { isAdmin } = usePermission();
+  const { toast } = useToast();
   const { mutate, isPending } = useMutation({
     mutationKey: [],
     mutationFn: DeleteAward,
+    onSuccess: () => {
+      toast({ title: tGlobal("toast.delete") });
+    },
+    onError: () => {
+      toast({ title: tGlobal("toast.error") });
+    },
+
     onSettled: async () => {
       return await queryClient.invalidateQueries({
         queryKey: [`getAwards ${id ?? getSearchParam("id")}`],

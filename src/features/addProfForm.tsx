@@ -1,5 +1,6 @@
 "use client";
 
+import { useToast } from "@/hooks/use-toast";
 import { CreateProf } from "@/src/shared/api/prof";
 import { useLocation } from "@/src/shared/hooks";
 import {
@@ -19,12 +20,19 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 export const AddProfForm = () => {
   const t = useTranslations("profForm");
   const tGlobal = useTranslations();
+  const { toast } = useToast();
   const { router } = useLocation();
   const { mutate, isPending, isError } = useMutation({
     mutationKey: ["addProf"],
     mutationFn: CreateProf,
     onSuccess: (data) => {
+      toast({
+        title: tGlobal("toast.create"),
+      });
       router.push(`prof/${data.bin}?type=about`);
+    },
+    onError: () => {
+      toast({ title: tGlobal("toast.error") });
     },
   });
   const inputs: string[] = t.raw("inputs");

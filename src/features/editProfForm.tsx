@@ -1,4 +1,5 @@
 "use client";
+import { useToast } from "@/hooks/use-toast";
 import { PatchProf } from "@/src/shared/api/prof";
 import { queryClient } from "@/src/shared/lib/client";
 import {
@@ -22,9 +23,17 @@ export const EditProfForm = ({
 }) => {
   const t = useTranslations("profForm");
   const tGlobal = useTranslations();
+  const { toast } = useToast();
   const { mutate, isPending, isError } = useMutation({
     mutationKey: ["editProf"],
     mutationFn: PatchProf,
+    onSuccess: () => {
+      toast({ title: tGlobal("toast.edit") });
+    },
+    onError: () => {
+      toast({ title: tGlobal("toast.error") });
+    },
+
     onSettled: async () => {
       return await queryClient.invalidateQueries({
         queryKey: [`profAbout ${profData.bin}`],

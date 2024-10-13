@@ -1,4 +1,5 @@
 "use client";
+import { useToast } from "@/hooks/use-toast";
 import { DeleteButton } from "@/src/features";
 import {
   DeleteCollegianBodies,
@@ -49,10 +50,18 @@ export const BodiesTable = () => {
     },
     enabled: !!id && typeof id == "string",
   });
+  const { toast } = useToast();
   const { isAdmin } = usePermission();
   const { mutate, isPending } = useMutation({
     mutationKey: [],
     mutationFn: DeleteCollegianBodies,
+    onSuccess: () => {
+      toast({ title: tGlobal("toast.delete") });
+    },
+    onError: () => {
+      toast({ title: tGlobal("toast.error") });
+    },
+
     onSettled: async () => {
       return await queryClient.invalidateQueries({
         queryKey: [`bodies ${id}`],

@@ -1,4 +1,5 @@
 "use client";
+import { useToast } from "@/hooks/use-toast";
 import { CreatePartnership } from "@/src/shared/api/partners";
 import { queryClient } from "@/src/shared/lib/client";
 import {
@@ -22,9 +23,17 @@ export const AddSocialPartnershipAgreementsForm = () => {
   const { id } = useParams();
   const t = useTranslations("addSocialPartnershipAgreementsForm");
   const tGlobal = useTranslations();
+  const { toast } = useToast();
   const { mutate, isPending, isError } = useMutation({
     mutationKey: [`partnership ${id}`],
     mutationFn: CreatePartnership,
+    onSuccess: () => {
+      toast({ title: tGlobal("toast.create") });
+    },
+    onError: () => {
+      toast({ title: tGlobal("toast.error") });
+    },
+
     onSettled: async () => {
       return await queryClient.invalidateQueries({
         queryKey: [`GetPartnerships ${id}`],

@@ -1,4 +1,5 @@
 "use client";
+import { useToast } from "@/hooks/use-toast";
 import { CreateAward } from "@/src/shared/api/awards";
 import { useLocation, usePermission } from "@/src/shared/hooks";
 import { queryClient } from "@/src/shared/lib/client";
@@ -11,9 +12,16 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 export const AddAwardForm = ({ id }: { id?: string }) => {
   const t = useTranslations();
   const { getSearchParam } = useLocation();
+  const { toast } = useToast();
   const { mutate, isPending, isError } = useMutation({
     mutationKey: ["addAward"],
     mutationFn: CreateAward,
+    onSuccess: () => {
+      toast({ title: t("toast.create") });
+    },
+    onError: () => {
+      toast({ title: t("toast.error") });
+    },
     onSettled: async () => {
       return await queryClient.invalidateQueries({
         queryKey: [`getAwards ${id}`],

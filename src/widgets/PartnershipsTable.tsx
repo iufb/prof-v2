@@ -1,4 +1,5 @@
 "use client";
+import { useToast } from "@/hooks/use-toast";
 import { DeleteButton } from "@/src/features";
 import { DeletePartnership, GetPartnerships } from "@/src/shared/api/partners";
 import { usePermission } from "@/src/shared/hooks";
@@ -35,9 +36,17 @@ export const PartnershipsTable = () => {
     enabled: !!id,
   });
   const { isAdmin } = usePermission();
+  const { toast } = useToast();
   const { mutate, isPending } = useMutation({
     mutationKey: ["Delete Partnerships"],
     mutationFn: DeletePartnership,
+    onSuccess: () => {
+      toast({ title: tGlobal("toast.delete") });
+    },
+    onError: () => {
+      toast({ title: tGlobal("toast.error") });
+    },
+
     onSettled: async () => {
       return await queryClient.invalidateQueries({
         queryKey: [`GetPartnerships ${id}`],

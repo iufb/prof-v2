@@ -20,6 +20,7 @@ export const LoginForm = () => {
         return;
       }
       setCookie("role", "base");
+      setCookie("id", btoa(data.username));
       router.push(`/prof/${btoa(getValues("username"))}?type=about`);
     },
   });

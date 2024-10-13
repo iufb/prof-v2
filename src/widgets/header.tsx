@@ -9,15 +9,15 @@ import {
 } from "@/src/shared/ui";
 import { getTranslations } from "next-intl/server";
 
-export const Header = ({ isAdmin }: { isAdmin: boolean }) => {
+export const Header = ({ isAdmin, id }: { isAdmin: boolean; id: string }) => {
   return (
     <header className="max-w-[87.5rem] w-full mx-auto h-20 text-md flex items-center justify-start">
-      <Navbar isAdmin={isAdmin} />
+      <Navbar id={id} isAdmin={isAdmin} />
     </header>
   );
 };
 
-const Navbar = async ({ isAdmin }: { isAdmin: boolean }) => {
+const Navbar = async ({ isAdmin, id }: { isAdmin: boolean; id: string }) => {
   const t = await getTranslations("navbar");
   const links: Array<{
     label: string;
@@ -38,7 +38,9 @@ const Navbar = async ({ isAdmin }: { isAdmin: boolean }) => {
                   <ul className="flex flex-col gap-3 p-3">
                     {link.children.map((child, idx) => (
                       <li className=" font-medium" key={idx}>
-                        <Link href={child.href}>{child.label}</Link>
+                        <Link href={child.href.replace("{id}", id)}>
+                          {child.label}
+                        </Link>
                       </li>
                     ))}
                   </ul>

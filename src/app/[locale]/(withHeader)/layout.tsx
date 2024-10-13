@@ -6,7 +6,10 @@ export default function Layout({ children }: { children: ReactNode }) {
   const cookie = cookies();
   return (
     <>
-      <Header isAdmin={cookie.get("role")?.value == "admin"} />
+      <Header
+        id={cookie.get("id")?.value ?? ""}
+        isAdmin={cookie.get("role")?.value == "admin"}
+      />
       {children}
     </>
   );

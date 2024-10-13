@@ -26,23 +26,23 @@
                 "children": [
                     {
                         "label": "О Профсоюзе",
-                        "href": "/?type=about"
+                        "href": "/prof/{id}?type=about"
                     },
                     {
                         "label": "Коллегиальные органы",
-                        "href": "/?type=collegiate-bodies"
+                        "href": "/prof/{id}?type=collegiate-bodies"
                     },
                     {
                         "label": "Аппарат",
-                        "href": "/?type=apparatus"
+                        "href": "/prof/{id}?type=apparatus"
                     },
                     {
                         "label": "Социальное партнерство",
-                        "href": "/?type=partners"
+                        "href": "/prof/{id}?type=partners"
                     },
                     {
                         "label": "Формы отчетов",
-                        "href": "/?type=reports"
+                        "href": "/prof/{id}?type=reports"
                     }
                 ]
             },

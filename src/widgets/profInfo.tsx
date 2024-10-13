@@ -1,5 +1,5 @@
 "use client";
-import { About, Apparatus } from "@/src/entities/prof";
+import { About, Apparatus, CollegiateBodies } from "@/src/entities/prof";
 import { useLocation } from "@/src/shared/hooks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/shared/ui";
 import { useTranslations } from "next-intl";
@@ -15,7 +15,7 @@ export const ProfInfo = () => {
   };
 
   return (
-    <section className="px-5 pt-5 pb-5 overflow-auto  border border-slate-300  rounded-sm min-h-[calc(100svh-5.625rem)] h-full">
+    <section className="px-5 pt-5 pb-5 overflow-auto   border border-slate-300  rounded-sm min-h-[calc(100svh-5.625rem)] h-full">
       <Tabs defaultValue={getSearchParam("type") ?? "about"} className="">
         <TabsList className="gap-4 py-8 px-5 border border-slate-400">
           {links.map((link) => (
@@ -35,13 +35,6 @@ export const ProfInfo = () => {
         <Partners />
       </Tabs>
     </section>
-  );
-};
-const CollegiateBodies = () => {
-  return (
-    <TabsContent value="collegiate-bodies">
-      Make changes to your account here. bodies
-    </TabsContent>
   );
 };
 

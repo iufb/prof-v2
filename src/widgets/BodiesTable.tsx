@@ -1,6 +1,5 @@
 "use client";
 import { DeleteButton } from "@/src/features";
-import { DeleteAward } from "@/src/shared/api/awards";
 import {
   DeleteCollegianBodies,
   GetCollegianBodies,

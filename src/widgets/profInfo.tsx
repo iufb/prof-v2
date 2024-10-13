@@ -1,7 +1,12 @@
 "use client";
-import { About, Apparatus, CollegiateBodies } from "@/src/entities/prof";
+import {
+  About,
+  Apparatus,
+  CollegiateBodies,
+  Partners,
+} from "@/src/entities/prof";
 import { useLocation } from "@/src/shared/hooks";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/shared/ui";
+import { Tabs, TabsList, TabsTrigger } from "@/src/shared/ui";
 import { useTranslations } from "next-intl";
 export const ProfInfo = () => {
   const { router, pathname, getSearchParam } = useLocation();
@@ -35,13 +40,5 @@ export const ProfInfo = () => {
         <Partners />
       </Tabs>
     </section>
-  );
-};
-
-const Partners = () => {
-  return (
-    <TabsContent value="partners">
-      Make changes to your account here. Partnwer
-    </TabsContent>
   );
 };

@@ -1,6 +1,9 @@
 "use client";
+import { CreatePartnership } from "@/src/shared/api/partners";
+import { queryClient } from "@/src/shared/lib/client";
 import {
   Button,
+  Error,
   Input,
   Select,
   SelectContent,
@@ -9,26 +12,44 @@ import {
   SelectValue,
 } from "@/src/shared/ui";
 import { Label } from "@/src/shared/ui/label";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 type FormFields = Record<string, string>;
 export const AddSocialPartnershipAgreementsForm = () => {
+  const { id } = useParams();
   const t = useTranslations("addSocialPartnershipAgreementsForm");
-  const { register, handleSubmit, control } = useForm<FormFields>();
+  const tGlobal = useTranslations();
+  const { mutate, isPending, isError } = useMutation({
+    mutationKey: [`partnership ${id}`],
+    mutationFn: CreatePartnership,
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({
+        queryKey: [`GetPartnerships ${id}`],
+      });
+    },
+  });
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormFields>();
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data);
+    mutate({ ...data, prof_id: id as string });
   };
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="flex mx-5 text-lg md:mx-0 flex-col gap-4 p-4 bg-slate-100 border border-slate-300 rounded-sm"
     >
-      <h1 className="text-3xl">{t("title")}</h1>
       <section className="grid  gap-4">
         <Controller
           control={control}
           name={"agreement_type"}
+          rules={{ required: tGlobal("forms.required") }}
           render={({ field: { onChange, value } }) => (
             <div>
               <Label className="text-md">{t("agreement_type.label")}</Label>
@@ -44,21 +65,25 @@ export const AddSocialPartnershipAgreementsForm = () => {
                   ))}
                 </SelectContent>
               </Select>
+              <Error>{errors["agreement_type"]?.message}</Error>
             </div>
           )}
         />
         <Input
           type="date"
-          {...register("start_date")}
+          error={errors["start_date"]?.message}
+          {...register("start_date", { required: tGlobal("forms.required") })}
           placeholder={t("start_date")}
         />
         <Input
           type="date"
-          {...register("end_date")}
+          error={errors["end_date"]?.message}
+          {...register("end_date", { required: tGlobal("forms.required") })}
           placeholder={t("end_date")}
         />
       </section>
-      <Button>{t("btn")}</Button>
+      {isError && <Error>{tGlobal("forms.error")}</Error>}
+      <Button disabled={isPending}>{t("btn")}</Button>
     </form>
   );
 };

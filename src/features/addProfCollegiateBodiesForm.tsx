@@ -22,7 +22,7 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 type FormFields = Record<string, string>;
 export const AddProfCollegiateBodiesForm = () => {
   const t = useTranslations("addProfCollegiateBodiesForm");
-  const { id } = useParams();
+  const id = atob(useParams().id);
   const tGlobal = useTranslations();
   const {
     register,

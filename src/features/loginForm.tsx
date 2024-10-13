@@ -20,7 +20,7 @@ export const LoginForm = () => {
         return;
       }
       setCookie("role", "base");
-      router.push(`prof/${btoa(getValues("username"))}?type=about`);
+      router.push(`/prof/${btoa(getValues("username"))}?type=about`);
     },
   });
   const t = useTranslations("login");

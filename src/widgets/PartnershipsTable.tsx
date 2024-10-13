@@ -21,7 +21,7 @@ import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 export const PartnershipsTable = () => {
   const t = useTranslations("addSocialPartnershipAgreementsForm");
-  const { id } = useParams();
+  const id = atob(useParams().id as string);
   const tGlobal = useTranslations();
   const {
     data: awards,

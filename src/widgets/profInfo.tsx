@@ -4,6 +4,7 @@ import {
   Apparatus,
   CollegiateBodies,
   Partners,
+  Reports,
 } from "@/src/entities/prof";
 import { useLocation } from "@/src/shared/hooks";
 import { Tabs, TabsList, TabsTrigger } from "@/src/shared/ui";
@@ -28,7 +29,7 @@ export const ProfInfo = () => {
               key={link.href}
               onClick={() => onTabSelect(link.href.slice(7, link.href.length))}
               value={link.href.slice(7, link.href.length)}
-              className="text-xl"
+              className="text-lg"
             >
               {link.label}
             </TabsTrigger>
@@ -38,6 +39,7 @@ export const ProfInfo = () => {
         <CollegiateBodies />
         <Apparatus />
         <Partners />
+        <Reports />
       </Tabs>
     </section>
   );

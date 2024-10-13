@@ -16,10 +16,11 @@ export const LoginForm = () => {
       setCookie("token", data.token, { maxAge: 3600 });
       if (getValues("username") == "root") {
         setCookie("role", "admin", { maxAge: 3600 });
-        router.push("structure");
+        router.push("/structure");
         return;
       }
-      router.push(`prof/${getValues("username")}?type=about`);
+      setCookie("role", "base");
+      router.push(`prof/${btoa(getValues("username"))}?type=about`);
     },
   });
   const t = useTranslations("login");

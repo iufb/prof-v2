@@ -1,6 +1,7 @@
 "use client";
 import { useToast } from "@/hooks/use-toast";
 import { CreateReport } from "@/src/shared/api/reports";
+import { queryClient } from "@/src/shared/lib/client";
 import {
   Button,
   Error,
@@ -14,10 +15,12 @@ import {
 import { Label } from "@/src/shared/ui/label";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 type FormFields = Record<string, string>;
 export const AddReportForm = () => {
+  const { id } = useParams();
   const t = useTranslations("addReportForm");
   const tGlobal = useTranslations();
   const {
@@ -36,24 +39,22 @@ export const AddReportForm = () => {
     onError: () => {
       toast({ title: tGlobal("toast.error") });
     },
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({
+        queryKey: [`reports ${id}`],
+      });
+    },
   });
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     console.log(data);
-    mutate(data);
+    mutate({ ...data, prof_id: id as string });
   };
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="flex mx-5 text-lg md:mx-0 flex-col gap-4 p-4 bg-slate-100 border border-slate-300 rounded-sm"
     >
-      <h1 className="text-3xl">{t("title")}</h1>
       <section className="grid grid-cols-2 gap-4">
-        <Input
-          error={errors["prof_id"]?.message}
-          {...register("prof_id", { required: tGlobal("forms.required") })}
-          placeholder={t("prof_id")}
-        />
-
         <Controller
           control={control}
           name={"report_type"}

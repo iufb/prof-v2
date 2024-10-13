@@ -1,5 +1,7 @@
 export { LoginForm } from "./loginForm";
+export { CreatePassForm } from "./createPassForm";
 export { DeleteButton } from "./deleteButton";
+export { LogoutButton } from "./logoutButton";
 export { EditWorkerForm } from "./editWorkerForm";
 export { EditButton } from "./editButton";
 export { AddButton } from "./addButton";

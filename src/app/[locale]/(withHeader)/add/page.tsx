@@ -1,12 +1,4 @@
-import {
-  AddAwardForm,
-  AddProfCollegiateBodiesForm,
-  AddProfForm,
-  AddReportForm,
-  AddSocialPartnershipAgreementsForm,
-  AddVacationForm,
-  AddWorkerForm,
-} from "@/src/features";
+import { AddProfForm, CreatePassForm } from "@/src/features";
 
 export default function AddPage({
   searchParams,
@@ -24,18 +16,9 @@ const getForm = (type: string) => {
   switch (type) {
     case "prof":
       return <AddProfForm />;
-    case "worker":
-      return <AddWorkerForm />;
-    case "awards":
-      return <AddAwardForm />;
-    case "vacation":
-      return <AddVacationForm />;
-    case "soc":
-      return <AddSocialPartnershipAgreementsForm />;
-    case "report":
-      return <AddReportForm />;
-    case "bodies":
-      return <AddProfCollegiateBodiesForm />;
+    case "pass":
+      return <CreatePassForm />;
+
     default:
       return <div>Not found</div>;
   }

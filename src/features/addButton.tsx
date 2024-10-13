@@ -10,7 +10,7 @@ import {
 } from "@/src/shared/ui";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 interface EditButtonProps {
   addForm: ReactNode;
   label: string;
@@ -19,8 +19,13 @@ interface EditButtonProps {
 export const AddButton = ({ addForm, label, className }: EditButtonProps) => {
   const t = useTranslations("addBtn");
   const { isAdmin } = usePermission();
-  if (!isAdmin) return <></>;
+  const [isClient, setIsClient] = useState(false);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  if (!isClient) return <></>;
+  if (!isAdmin) return <></>;
   return (
     <Dialog>
       <DialogTrigger
@@ -40,7 +45,7 @@ export const AddButton = ({ addForm, label, className }: EditButtonProps) => {
             {t("desc")} {label}
           </DialogDescription>
         </DialogHeader>
-        <div>{addForm}</div>
+        {addForm}
       </DialogContent>
     </Dialog>
   );

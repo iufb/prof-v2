@@ -1,4 +1,5 @@
 "use client";
+
 import { AddButton, AddProfCollegiateBodiesForm } from "@/src/features";
 import { TabsContent } from "@/src/shared/ui";
 import { BodiesTable } from "@/src/widgets";
@@ -14,8 +15,8 @@ export const CollegiateBodies = () => {
           addForm={<AddProfCollegiateBodiesForm />}
           label={t("bodies.label")}
         />
-        <BodiesTable />
       </section>
+      <BodiesTable />
     </TabsContent>
   );
 };

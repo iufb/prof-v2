@@ -6,8 +6,8 @@ export const CreateCollegianBodies = (body: Record<string, string>) => {
 };
 
 export const GetCollegianBodies = () => {
-  return customFetch({ path: `${path}/`, method: "GET" });
+  return customFetch({ path: `${path}`, method: "GET" });
 };
 export const DeleteCollegianBodies = (id: string) => {
-  return customFetch({ path: `${path}/${id}/`, method: "DELETE" });
+  return customFetch({ path: `${path}${id}/`, method: "DELETE" });
 };

@@ -9,7 +9,7 @@ import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
 export const About = () => {
-  const { id: bin } = useParams();
+  const bin = atob(useParams().id as string);
   const { getSearchParam } = useLocation();
   const {
     data: profData,

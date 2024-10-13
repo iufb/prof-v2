@@ -54,7 +54,7 @@ export const WorkerTable = ({ id }: { id: string }) => {
         />
         <EditButton
           label={t("worker.edit")}
-          editForm={<EditWorkerForm workerData={workerData} />}
+          editForm={<EditWorkerForm workerData={{ ...workerData, id }} />}
         />
       </section>
       {workerData && (

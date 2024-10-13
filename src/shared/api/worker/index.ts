@@ -16,7 +16,7 @@ export const PatchWorker = ({
 }) => {
   return customFetch({
     method: "PATCH",
-    path: `prof-member-view/${id}`,
+    path: `prof-member-view/${id}/`,
     body: { multipart: body },
   });
 };

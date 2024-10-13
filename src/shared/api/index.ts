@@ -1,6 +1,6 @@
 import { getCookie } from "cookies-next";
-// const backendUrl = "http://77.243.80.138:82";
-const backendUrl = "http://yekinsgnhome.ddns.net:8000";
+const backendUrl = "http://77.243.80.138:82";
+// const backendUrl = "http://yekinsgnhome.ddns.net:8000";
 interface CRequest {
   path: string;
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "UPDATE";
@@ -59,6 +59,9 @@ export const customFetch = async (params: CRequest) => {
   }
   if (isJson) {
     throw await response.json();
+  }
+  if (response.status === 401) {
+    console.log("Hello");
   }
   if (response.status === 404) {
     throw { message: `notFound ${params.path}` };

@@ -5,7 +5,6 @@ import { Button, Error, Input } from "@/src/shared/ui";
 import { useMutation } from "@tanstack/react-query";
 import { deleteCookie, setCookie } from "cookies-next";
 import { useTranslations } from "next-intl";
-import { cookies } from "next/headers";
 import { useForm } from "react-hook-form";
 
 export const LoginForm = () => {
@@ -14,9 +13,9 @@ export const LoginForm = () => {
     mutationKey: ["login"],
     mutationFn: Login,
     onSuccess: (data) => {
-      setCookie("token", data.token);
+      setCookie("token", data.token, { maxAge: 3600 });
       if (getValues("username") == "root") {
-        setCookie("role", "admin");
+        setCookie("role", "admin", { maxAge: 3600 });
         router.push("structure");
         return;
       }

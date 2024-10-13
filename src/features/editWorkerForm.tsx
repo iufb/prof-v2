@@ -21,7 +21,7 @@ export const EditWorkerForm = ({
 }: {
   workerData: Record<string, string>;
 }) => {
-  console.log(workerData);
+  console.log(workerData.id);
 
   const t = useTranslations("workerForm");
   const tGlobal = useTranslations();
@@ -46,22 +46,25 @@ export const EditWorkerForm = ({
     formState: { errors },
   } = useForm<FormFields>({ defaultValues: workerData });
   const onSubmit: SubmitHandler<FormFields> = (data) => {
+    console.log(workerData, "DEFAULT");
+    console.log(data, "FORM");
+
     mutate({ body: data, id: workerData.id });
   };
+
   return (
     <section>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className=" max-h-[calc(80vh)] overflow-hidden  hover:overflow-auto flex  mx-5 text-lg md:mx-0 flex-col gap-4 p-4 bg-slate-100 border border-slate-300 rounded-sm"
+        className=" max-h-[calc(80vh)] overflow-auto flex  mx-5 text-lg md:mx-0 flex-col gap-4 p-4 bg-slate-100 border border-slate-300 rounded-sm"
       >
-        <h1 className="text-3xl">{t("edit.title")}</h1>
+        <h1 className="text-xl">{t("edit.title")}</h1>
         <section className="grid grid-cols-2 gap-4">
           {files.map((file, idx) => (
             <Controller
               key={file}
               control={control}
               name={fileKeys[idx]}
-              rules={{ required: tGlobal("forms.required") }}
               render={({ field: { onChange, value } }) => (
                 <Input
                   error={errors[fileKeys[idx]]?.message}
@@ -153,7 +156,7 @@ export const EditWorkerForm = ({
 const dateKeys = [
   "birth_date",
   "total_work_experience",
-  "org_work_experience ",
+  "org_work_experience",
   "union_membership_date",
 ];
 const selectKeys = ["gender", "position", "role", "education"];

@@ -26,7 +26,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 export const AddWorkerForm = () => {
-  const t = useTranslations("addWorkerForm");
+  const t = useTranslations("workerForm");
   const tGlobal = useTranslations();
   const { router, pathname, changeSearchParam, params } = useLocation();
   const { mutateAsync, isPending, isError } = useMutation({

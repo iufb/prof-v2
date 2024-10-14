@@ -8,32 +8,44 @@ import {
 } from "@/src/entities/prof";
 import { useLocation } from "@/src/shared/hooks";
 import { Tabs, TabsList, TabsTrigger } from "@/src/shared/ui";
+import { getCookie } from "cookies-next";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 export const ProfInfo = () => {
   const { router, pathname, getSearchParam } = useLocation();
+  const id = useParams().id;
   const t = useTranslations("navbar");
   const links: Array<{
     label: string;
     href: string;
   }> = t.raw("links")[0].children;
   const onTabSelect = (type: string) => {
-    router.push(`${pathname}?type=${type}`);
+    if (id) {
+      router.push(`/${pathname}?type=${type}`);
+    } else {
+      router.push(`/${pathname}/${getCookie("id")}?type=${type}`);
+    }
   };
 
   return (
     <section className="px-5 pt-5 pb-5 overflow-auto   border border-slate-300  rounded-sm min-h-[calc(100svh-5.625rem)] h-full">
       <Tabs defaultValue={getSearchParam("type") ?? "about"} className="">
         <TabsList className="gap-4 py-8 px-5 border border-slate-400">
-          {links.map((link) => (
-            <TabsTrigger
-              key={link.href}
-              onClick={() => onTabSelect(link.href.slice(7, link.href.length))}
-              value={link.href.slice(7, link.href.length)}
-              className="text-lg"
-            >
-              {link.label}
-            </TabsTrigger>
-          ))}
+          {links.map((link) => {
+            console.log(link.href.slice(16, link.href.length));
+            return (
+              <TabsTrigger
+                key={link.href}
+                onClick={() =>
+                  onTabSelect(link.href.slice(16, link.href.length))
+                }
+                value={link.href.slice(16, link.href.length)}
+                className="text-lg"
+              >
+                {link.label}
+              </TabsTrigger>
+            );
+          })}
         </TabsList>
         <About />
         <CollegiateBodies />

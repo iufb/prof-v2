@@ -10,6 +10,7 @@ export const LogoutButton = ({ ...props }: LogoutButtonProps) => {
   const logout = () => {
     deleteCookie("role");
     deleteCookie("token");
+    deleteCookie("id");
     router.refresh();
   };
   const { router } = useLocation();

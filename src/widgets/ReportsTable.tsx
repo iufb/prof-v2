@@ -27,7 +27,7 @@ import { useParams } from "next/navigation";
 import { ReactNode, useState } from "react";
 
 export const ReportsTable = () => {
-  const id = atob(useParams().id);
+  const id = useParams().id;
   const tGlobal = useTranslations();
   const types: { label: string; values: string[] } = tGlobal.raw(
     "addReportForm.report_type",

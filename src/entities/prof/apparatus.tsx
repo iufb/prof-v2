@@ -20,7 +20,7 @@ import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
 export const Apparatus = () => {
-  const bin = atob(useParams().id as string);
+  const bin = useParams().id as string;
   const { getSearchParam } = useLocation();
   const {
     data: apparatusData,

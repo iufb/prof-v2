@@ -10,7 +10,9 @@ export const CreateProf = (body: Record<string, string>) => {
 export const GetProf = (bin: string) => {
   return customFetch({ method: "GET", path: `${path}${bin}` });
 };
-
+export const GetAllProf = () => {
+  return customFetch({ method: "GET", path });
+};
 export const PatchProf = ({
   body,
   bin,

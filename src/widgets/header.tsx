@@ -25,7 +25,7 @@ const Navbar = async ({ isAdmin, id }: { isAdmin: boolean; id: string }) => {
     children?: { label: string; href: string }[];
   }> = t.raw("links");
   return (
-    <NavigationMenu>
+    <NavigationMenu className="flex-1 w-full mx-auto ">
       <NavigationMenuList className=" w-full gap-4 ">
         {links.map((link, idx) => (
           <NavigationMenuItem key={idx}>

@@ -20,7 +20,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 type FormFields = Record<string, string>;
 export const AddReportForm = () => {
-  const id = atob(useParams().id);
+  const id = useParams().id;
   const t = useTranslations("addReportForm");
   const tGlobal = useTranslations();
   const {

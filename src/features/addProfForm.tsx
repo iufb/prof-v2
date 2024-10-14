@@ -1,6 +1,7 @@
 "use client";
 
 import { useToast } from "@/hooks/use-toast";
+import { ProfNameSelect } from "@/src/features/profNameSelect";
 import { CreateProf } from "@/src/shared/api/prof";
 import { useLocation } from "@/src/shared/hooks";
 import {
@@ -54,6 +55,20 @@ export const AddProfForm = () => {
     >
       <h1 className="text-3xl">{t("add.title")}</h1>
       <section className="grid grid-cols-2 gap-3">
+        <section>
+          <Controller
+            name={"higher_union_org"}
+            control={control}
+            rules={{ required: tGlobal("forms.required") }}
+            render={({ field: { onChange, value } }) => (
+              <>
+                <Label className="text-md">{t("higher")}</Label>
+                <ProfNameSelect value={value} onChange={onChange} />
+                {<Error>{errors["higher_union_org"]?.message}</Error>}
+              </>
+            )}
+          ></Controller>
+        </section>
         {selects.map((select, idx) => (
           <Controller
             key={select.label}
@@ -100,7 +115,6 @@ export const AddProfForm = () => {
 const selectKeys = [
   "industry", // Отрасль (наименование отрасли)
   "union_type", // Тип Профсоюза
-  "higher_union_org", // Вышестоящая профсоюзная организация
 ];
 
 const inputKeys = [

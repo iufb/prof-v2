@@ -1,4 +1,5 @@
 export { LoginForm } from "./loginForm";
+export { RestoreButton } from "./restoreButton";
 export { ProfNameSelect } from "./profNameSelect";
 export { CreatePassForm } from "./createPassForm";
 export { DeleteButton } from "./deleteButton";

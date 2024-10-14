@@ -12,6 +12,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  Input,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -33,6 +34,9 @@ export function ProfNameSelect({
     queryKey: ["higher_union_org"],
     queryFn: async () => {
       const data: Record<string, string>[] = await GetAllProf();
+      if (data.length == 0) {
+        data.push({ union_name: "Нет" });
+      }
       return data;
     },
   });

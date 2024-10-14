@@ -16,48 +16,46 @@ import Image from "next/image";
 
 export const WorkerTable = ({ id }: { id: string }) => {
   const t = useTranslations();
-  const {
-    data: workerData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: [`worker ${id}`],
     queryFn: async () => {
       const data = await GetWorker(id);
-      console.log(data);
-
       return data;
     },
   });
+  console.log(data);
+
   if (isLoading) return <Loader />;
   if (isError)
     return <Error className="block text-lg mt-10">{t("get.error")}</Error>;
   const tableValues = Object.values(
-    DeleteFieldsFromObj(workerData, [
+    DeleteFieldsFromObj({ ...data }, [
       "id",
       "photo",
+      "prof_id",
       "awards_list",
       "vacation_list",
-      "prof_id",
     ]),
   );
 
   return (
     <section className="flex flex-col gap-5 mt-3">
       <section className="flex justify-between">
-        <Image
+        <img
           className="rounded-md"
-          src={workerData.photo ?? "/1.webp"}
+          src={data.photo.replace("net", "net:8000")}
           width={200}
           height={200}
           alt="photo"
         />
         <EditButton
           label={t("worker.edit")}
-          editForm={<EditWorkerForm workerData={{ ...workerData, id }} />}
+          editForm={
+            <EditWorkerForm workerData={{ ...data, id, photo: null }} />
+          }
         />
       </section>
-      {workerData && (
+      {data && (
         <VerticalTable labels={t.raw("worker.table")} values={tableValues} />
       )}
       <AddAwardForm id={id} />

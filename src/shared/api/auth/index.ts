@@ -11,3 +11,16 @@ export const CreatePass = (body: { username: string }) => {
     body: { json: body },
   });
 };
+
+export const RestorePass = async (id: string) => {
+  const { uid, token } = await customFetch({
+    method: "POST",
+    path: "generate_reset_token/ ",
+    body: { multipart: { username: id } },
+  });
+  return customFetch({
+    method: "POST",
+    path: "reset_password/",
+    body: { multipart: { uid, token } },
+  });
+};

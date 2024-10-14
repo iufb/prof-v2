@@ -53,8 +53,10 @@ export const EditWorkerForm = ({
     formState: { errors },
   } = useForm<FormFields>({ defaultValues: workerData });
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(workerData, "DEFAULT");
-    console.log(data, "FORM");
+    if (typeof data.photo == null) {
+      delete data["photo"];
+    }
+    console.log(data);
 
     mutate({ body: data, id: workerData.id });
   };

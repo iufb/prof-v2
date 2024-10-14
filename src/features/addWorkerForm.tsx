@@ -24,19 +24,21 @@ import {
 import { Label } from "@/src/shared/ui/label";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 export const AddWorkerForm = () => {
   const t = useTranslations("workerForm");
   const tGlobal = useTranslations();
   const { toast } = useToast();
-  const { router, pathname, changeSearchParam, params } = useLocation();
-  const { mutateAsync, isPending, isError } = useMutation({
+  const { params, pathname, getAllSearchParams, router } = useLocation();
+  const { mutate, isPending, isError } = useMutation({
     mutationKey: ["addWorker"],
     mutationFn: CreateWorker,
     onSuccess: (data) => {
       toast({ title: tGlobal("toast.create") });
-      router.push(`${pathname}/${changeSearchParam("id", data.id)}`);
+      router.push(`/${pathname}?${getAllSearchParams().url}&id=${data.id}`);
+      setShow(true);
     },
     onError: () => {
       toast({ title: tGlobal("toast.error") });
@@ -60,9 +62,12 @@ export const AddWorkerForm = () => {
     formState: { errors },
   } = useForm<FormFields>();
   const onSubmit: SubmitHandler<FormFields> = (data) => {
+    console.log(data);
     if (params.id) {
-      mutateAsync({ ...data, prof_id: params.id as string }).then(() => {
-        setShow(true);
+      mutate({
+        ...data,
+        photo: data.photo[0],
+        prof_id: params.id as string,
       });
     }
   };
@@ -75,20 +80,12 @@ export const AddWorkerForm = () => {
         <h1 className="text-3xl">{t("add.title")}</h1>
         <section className="grid grid-cols-2 gap-4">
           {files.map((file, idx) => (
-            <Controller
-              key={file}
-              control={control}
-              name={fileKeys[idx]}
-              rules={{ required: tGlobal("forms.required") }}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  error={errors[fileKeys[idx]]?.message}
-                  placeholder={file}
-                  type="file"
-                  onChange={onChange}
-                  value={value}
-                />
-              )}
+            <Input
+              key={idx}
+              error={errors[fileKeys[idx]]?.message}
+              placeholder={file}
+              type="file"
+              {...register(fileKeys[idx])}
             />
           ))}
 

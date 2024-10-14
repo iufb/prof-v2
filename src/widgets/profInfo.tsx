@@ -32,7 +32,6 @@ export const ProfInfo = () => {
       <Tabs defaultValue={getSearchParam("type") ?? "about"} className="">
         <TabsList className="gap-4 py-8 px-5 border border-slate-400">
           {links.map((link) => {
-            console.log(link.href.slice(16, link.href.length));
             return (
               <TabsTrigger
                 key={link.href}

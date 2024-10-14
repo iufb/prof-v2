@@ -55,20 +55,6 @@ export const AddProfForm = () => {
     >
       <h1 className="text-3xl">{t("add.title")}</h1>
       <section className="grid grid-cols-2 gap-3">
-        <section>
-          <Controller
-            name={"higher_union_org"}
-            control={control}
-            rules={{ required: tGlobal("forms.required") }}
-            render={({ field: { onChange, value } }) => (
-              <>
-                <Label className="text-md">{t("higher")}</Label>
-                <ProfNameSelect value={value} onChange={onChange} />
-                {<Error>{errors["higher_union_org"]?.message}</Error>}
-              </>
-            )}
-          ></Controller>
-        </section>
         {selects.map((select, idx) => (
           <Controller
             key={select.label}
@@ -95,6 +81,21 @@ export const AddProfForm = () => {
             )}
           />
         ))}
+        <section>
+          <Controller
+            name={"higher_union_org"}
+            control={control}
+            rules={{ required: tGlobal("forms.required") }}
+            render={({ field: { onChange, value } }) => (
+              <div className="flex flex-col gap-2">
+                <Label className="text-md">{t("higher")}</Label>
+                <ProfNameSelect value={value} onChange={onChange} />
+                {<Error>{errors["higher_union_org"]?.message}</Error>}
+              </div>
+            )}
+          />
+        </section>
+
         {inputs.map((input, idx) => (
           <Input
             {...register(inputKeys[idx], {

@@ -44,7 +44,9 @@ export const BodiesTable = () => {
   } = useQuery({
     queryKey: [`bodies ${id}`, type],
     queryFn: async () => {
-      const data: Record<string, string>[] = await GetCollegianBodies();
+      const data: Record<string, string>[] = await GetCollegianBodies(
+        id as string,
+      );
       //TODO: GET BODIES BY PROF_ID
       return data.filter((d) => d.prof_id == id && d.body_type == type);
     },

@@ -29,7 +29,7 @@ export const ProfInfo = () => {
 
   return (
     <section className="px-5 pt-5 pb-5 overflow-auto   border border-slate-300  rounded-sm min-h-[calc(100svh-5.625rem)] h-full">
-      <Tabs defaultValue={getSearchParam("type") ?? "about"} className="">
+      <Tabs defaultValue={getSearchParam("type") ?? "about"}>
         <TabsList className="gap-4 py-8 px-5 border border-slate-400">
           {links.map((link) => {
             return (

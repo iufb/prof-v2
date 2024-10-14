@@ -30,7 +30,9 @@ export const PartnershipsTable = () => {
   } = useQuery({
     queryKey: [`GetPartnerships ${id}`],
     queryFn: async () => {
-      const data: Record<string, string>[] = await GetPartnerships();
+      const data: Record<string, string>[] = await GetPartnerships(
+        id as string,
+      );
       return data.filter((d) => d.prof_id == id);
     },
     enabled: !!id,

@@ -6,8 +6,13 @@ export const CreateReport = (body: Record<string, string>) => {
   return customFetch({ method: "POST", path, body: { multipart: body } });
 };
 
-export const GetReports = () => {
-  return customFetch({ method: "GET", path });
+export const GetReports = (id: string) => {
+  return customFetch({
+    method: "GET",
+    path: `${path}`,
+
+    query: { prof_id: id },
+  });
 };
 
 export const DeleteReport = (id: string) => {

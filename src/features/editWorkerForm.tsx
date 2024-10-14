@@ -57,8 +57,11 @@ export const EditWorkerForm = ({
       delete data["photo"];
     }
     console.log(data);
-
-    mutate({ body: data, id: workerData.id });
+    if (data.photo) {
+      mutate({ body: { ...data, photo: data.photo[0] }, id: workerData.id });
+    } else {
+      mutate({ body: { ...data }, id: workerData.id });
+    }
   };
 
   return (
@@ -70,19 +73,12 @@ export const EditWorkerForm = ({
         <h1 className="text-xl">{t("edit.title")}</h1>
         <section className="grid grid-cols-2 gap-4">
           {files.map((file, idx) => (
-            <Controller
-              key={file}
-              control={control}
-              name={fileKeys[idx]}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  error={errors[fileKeys[idx]]?.message}
-                  placeholder={file}
-                  type="file"
-                  onChange={onChange}
-                  value={value}
-                />
-              )}
+            <Input
+              key={idx}
+              error={errors[fileKeys[idx]]?.message}
+              placeholder={file}
+              type="file"
+              {...register(fileKeys[idx])}
             />
           ))}
 

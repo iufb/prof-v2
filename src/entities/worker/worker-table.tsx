@@ -12,7 +12,6 @@ import { Error, Loader } from "@/src/shared/ui";
 import { VerticalTable } from "@/src/shared/ui/vertical-table";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 
 export const WorkerTable = ({ id }: { id: string }) => {
   const t = useTranslations();

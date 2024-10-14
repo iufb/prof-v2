@@ -41,7 +41,7 @@ export const ReportsTable = () => {
   } = useQuery({
     queryKey: [`reports ${id}`, type],
     queryFn: async () => {
-      const data: Record<string, string>[] = await GetReports();
+      const data: Record<string, string>[] = await GetReports(id as string);
       //TODO: GET BODIES BY PROF_ID
       return data.filter((d) => d.prof_id == id && d.report_type == type);
     },

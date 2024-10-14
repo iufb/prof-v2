@@ -9,7 +9,11 @@ export const useLocation = () => {
   const params = useParams();
   const s = useSearchParams();
   const getSearchParam = (key: string) => {
-    return s.get(key);
+    const value = s.get(key);
+    if (value == null) {
+      return undefined;
+    }
+    return value;
   };
   const changeSearchParam = (key: string, value: string): string => {
     const { searchParams, url } = getAllSearchParams();
@@ -43,6 +47,7 @@ export const useLocation = () => {
     pathname,
     router,
     params,
+    searchParams: s,
     getAllSearchParams,
     getSearchParam,
     changeSearchParam,

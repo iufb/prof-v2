@@ -7,6 +7,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/src/shared/ui";
+import clsx from "clsx";
 import { getTranslations } from "next-intl/server";
 
 export const Header = ({ isAdmin, id }: { isAdmin: boolean; id: string }) => {
@@ -28,7 +29,14 @@ const Navbar = async ({ isAdmin, id }: { isAdmin: boolean; id: string }) => {
     <NavigationMenu className="flex-1 w-full mx-auto ">
       <NavigationMenuList className=" w-full gap-4 ">
         {links.map((link, idx) => (
-          <NavigationMenuItem key={idx}>
+          <NavigationMenuItem
+            className={clsx(
+              isAdmin &&
+                (link.children || link.href.includes("workers")) &&
+                "hidden",
+            )}
+            key={idx}
+          >
             {link.children ? (
               <>
                 <NavigationMenuTrigger className="text-md">

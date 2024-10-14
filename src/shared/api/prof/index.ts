@@ -10,6 +10,10 @@ export const CreateProf = (body: Record<string, string>) => {
 export const GetProf = (bin: string) => {
   return customFetch({ method: "GET", path: `${path}${bin}` });
 };
+export const SearchProfs = (query: Record<string, string>) => {
+  if (Object.keys(query).length == 0) return [];
+  return customFetch({ method: "GET", path, query });
+};
 export const GetAllProf = () => {
   return customFetch({ method: "GET", path });
 };

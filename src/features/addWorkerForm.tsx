@@ -61,7 +61,6 @@ export const AddWorkerForm = () => {
     formState: { errors },
   } = useForm<FormFields>();
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data);
     if (params.id) {
       mutate({
         ...data,

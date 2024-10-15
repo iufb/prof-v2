@@ -60,9 +60,7 @@ export const customFetch = async (params: CRequest) => {
   if (isJson) {
     throw await response.json();
   }
-  if (response.status === 401) {
-    console.log("Hello");
-  }
+
   if (response.status === 404) {
     throw { message: `notFound ${params.path}` };
   }

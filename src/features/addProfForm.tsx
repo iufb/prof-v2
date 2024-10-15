@@ -45,7 +45,6 @@ export const AddProfForm = () => {
     formState: { errors },
   } = useForm<FormFields>();
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data);
     mutate(data);
   };
   return (

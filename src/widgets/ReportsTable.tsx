@@ -70,7 +70,6 @@ export const ReportsTable = () => {
     setType(value);
     refetch();
   };
-  console.log(status);
 
   return (
     <section>

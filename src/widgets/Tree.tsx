@@ -32,12 +32,10 @@ export const Tree = () => {
     queryKey: ["tree"],
     queryFn: async () => {
       const data: Prof = await GetTree(getCookie("id") ?? null);
-      console.log(data);
 
       return [data];
     },
   });
-  console.log(data);
 
   return (
     <section className="flex flex-col gap-4">

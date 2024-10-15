@@ -23,7 +23,6 @@ export const WorkerTable = ({ id }: { id: string }) => {
       return data;
     },
   });
-  console.log(data);
 
   if (isLoading) return <Loader />;
   if (isError)

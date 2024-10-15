@@ -46,7 +46,6 @@ export const AddReportForm = () => {
     },
   });
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data);
     mutate({ ...data, document: data.document[0], prof_id: id as string });
   };
   return (

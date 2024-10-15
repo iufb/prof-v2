@@ -49,7 +49,6 @@ export const EditProfForm = ({
     formState: { errors },
   } = useForm<FormFields>({ defaultValues: profData });
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data);
     mutate({ body: data, bin: profData.bin });
   };
   return (

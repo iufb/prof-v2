@@ -9,12 +9,20 @@ const intlMiddleware = createMiddleware(routing);
 function authMiddleware(req: NextRequest) {
   const token = req.cookies.get("token");
   const { pathname } = req.nextUrl;
-
+  if (pathname == "/") {
+    if (token) {
+      return NextResponse.redirect(new URL(`/ru/structure`, req.url));
+    } else {
+      return NextResponse.redirect(new URL(`/ru/login`, req.url));
+    }
+  }
   const locale = pathname.split("/")[1];
-
   if (pathname.startsWith(`/${locale}`)) {
+    if (token && pathname === `/${locale}`) {
+      return NextResponse.redirect(new URL(`/${locale}/structure`, req.url));
+    }
     if (token && pathname === `/${locale}/login`) {
-      return NextResponse.redirect(new URL(`/${locale}`, req.url));
+      return NextResponse.redirect(new URL(`/${locale}/structure`, req.url));
     }
     if (!token && pathname !== `/${locale}/login`) {
       return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
@@ -22,7 +30,7 @@ function authMiddleware(req: NextRequest) {
   }
 
   // If no redirect is needed, allow the request to proceed
-  return NextResponse.next();
+  // return NextResponse.next();
 }
 
 export function middleware(req: NextRequest) {

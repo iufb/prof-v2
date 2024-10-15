@@ -55,7 +55,13 @@ const Navbar = async ({ isAdmin, id }: { isAdmin: boolean; id: string }) => {
                 </NavigationMenuContent>
               </>
             ) : (
-              <Link className="font-medium" href={link.href}>
+              <Link
+                className={clsx(
+                  "font-medium",
+                  !isAdmin && link.href.includes("search") && "hidden",
+                )}
+                href={link.href}
+              >
                 {link.label}
               </Link>
             )}

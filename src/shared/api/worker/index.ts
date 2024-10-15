@@ -20,6 +20,11 @@ export const PatchWorker = ({
     body: { multipart: body },
   });
 };
+export const SearchWorkers = (query: Record<string, string>) => {
+  if (Object.keys(query).length == 0) return [];
+  return customFetch({ method: "GET", path: "prof-member-view/", query });
+};
+
 export const GetWorker = (id: string) => {
   return customFetch({
     method: "GET",

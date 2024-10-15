@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchProfs } from "@/src/shared/api/prof";
+import { SearchWorkers } from "@/src/shared/api/worker";
 import { useLocation } from "@/src/shared/hooks";
 import {
   Button,
@@ -26,7 +26,7 @@ import { useTranslations } from "next-intl";
 import { ReactNode, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
-export const SearchProf = () => {
+export const SearchWorker = () => {
   const t = useTranslations("search");
   const tGlobal = useTranslations();
   const { router } = useLocation();
@@ -34,9 +34,9 @@ export const SearchProf = () => {
     useForm<Record<string, string>>();
   const [search, setSearch] = useState<Record<string, string>>({});
   const { data: res, status } = useQuery({
-    queryKey: ["searchprof", ...Object.values(search)],
+    queryKey: ["searchworker", ...Object.values(search)],
     queryFn: async () => {
-      const data: Record<string, string>[] = await SearchProfs(search);
+      const data: Record<string, string>[] = await SearchWorkers(search);
       return data;
     },
     enabled: !!search,
@@ -50,23 +50,22 @@ export const SearchProf = () => {
     setSearch(data);
   };
   const selects: { label: string; values: string[] }[] =
-    tGlobal.raw("profForm.selects");
+    tGlobal.raw("workerForm.selects");
   return (
-    <section className="w-full ">
-      <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
+    <section className="">
+      <form
+        className="w-full flex flex-col gap-3"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <section className="grid grid-cols-3 gap-4">
+          <Input placeholder={t("page.worker.name")} {...register("name")} />
           <Input
-            placeholder={t("page.prof.name")}
-            {...register("union_name")}
-          />
-          <Input placeholder={t("page.prof.bin")} {...register("bin")} />
-          <Input
-            placeholder={t("page.prof.chairman")}
-            {...register("chairman_name")}
+            placeholder={t("page.worker.number")}
+            {...register("union_ticket_number")}
           />
           <Input
-            placeholder={t(`page.prof.higher`)}
-            {...register("higher_union_org")}
+            placeholder={t("page.worker.date")}
+            {...register("birth_date")}
           />
           {selects.map((select, idx) => (
             <Controller
@@ -107,13 +106,13 @@ export const SearchProf = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="text-center">
-                      {t("page.prof.name")}
+                      {t("page.worker.name")}
                     </TableHead>
                     <TableHead className="text-center">
-                      {t("page.prof.bin")}
+                      {t("page.worker.number")}
                     </TableHead>
                     <TableHead className="text-center">
-                      {t("page.prof.industry")}
+                      {t("page.prof.position")}
                     </TableHead>
                   </TableRow>
                 </TableHeader>
@@ -126,12 +125,12 @@ export const SearchProf = () => {
                       }}
                       key={r.bin}
                     >
+                      <TableCell className="text-center">{r.name}</TableCell>
                       <TableCell className="text-center">
-                        {r.union_name}
+                        {r.union_ticket_number}
                       </TableCell>
-                      <TableCell className="text-center">{r.bin}</TableCell>
                       <TableCell className="text-center">
-                        {r.industry}
+                        {r.position}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -143,6 +142,7 @@ export const SearchProf = () => {
     </section>
   );
 };
+
 const GetUI = ({ status: status, ui }: { status: string; ui: ReactNode }) => {
   const tGlobal = useTranslations();
   switch (status) {
@@ -154,8 +154,4 @@ const GetUI = ({ status: status, ui }: { status: string; ui: ReactNode }) => {
       return ui;
   }
 };
-
-const selectKeys = [
-  "industry", // Отрасль (наименование отрасли)
-  "union_type", // Тип Профсоюза
-];
+const selectKeys = ["gender", "position", "role", "education"];

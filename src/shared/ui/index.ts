@@ -7,7 +7,6 @@ export {
   AccordionContent,
 } from "./accordion";
 export { Loader } from "./loader";
-export { Calendar } from "./calendar";
 export { SelectInput } from "./select-input";
 export { Input } from "./input";
 export { NotFound } from "./not-found";

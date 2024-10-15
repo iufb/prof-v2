@@ -105,7 +105,7 @@ export const SearchWorker = () => {
       <section
         className={clsx(
           "flex  bg-slate-200 p-3 rounded-md min-h-32  mt-10 w-full flex-col gap-5",
-          res && res.length > 5 && "overflow-auto",
+          res && res.length > 5 && "overflow-auto mb-4",
         )}
       >
         {GetUI({

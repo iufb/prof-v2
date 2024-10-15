@@ -11,6 +11,7 @@ import {
 } from "@/src/shared/ui";
 import { useQuery } from "@tanstack/react-query";
 import { getCookie } from "cookies-next";
+import { Eye } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 export interface Prof {
@@ -30,12 +31,11 @@ export const Tree = () => {
   const { data, status } = useQuery({
     queryKey: ["tree"],
     queryFn: async () => {
-      const data: Prof = await GetTree(getCookie("id") as string);
+      const data: Prof = await GetTree(getCookie("id") ?? null);
       console.log(data);
 
       return [data];
     },
-    enabled: !!getCookie("id"),
   });
   console.log(data);
 
@@ -54,14 +54,27 @@ export const Tree = () => {
 };
 
 const Branch = ({ prof }: { prof: Prof }) => {
+  const t = useTranslations("tree");
   return (
     <AccordionItem value={prof.bin} className="ml-3">
       <AccordionTrigger className="text-md font-bold ">
-        {prof.union_type} {prof.union_name}
+        <section className="flex justify-between flex-1 mr-10">
+          <span>
+            {prof.union_type} {prof.union_name}{" "}
+          </span>
+          {prof.children.length !== 0 && (
+            <Link
+              className="p-2 rounded-md bg-black"
+              href={`/prof/${prof.bin}?type=about`}
+            >
+              <Eye color="white" aria-label="visit" />
+            </Link>
+          )}
+        </section>
       </AccordionTrigger>
       <AccordionContent className="">
         {prof.children.length == 0 && (
-          <Link href={`/prof/${prof.bin}?type=about`}>Перейти</Link>
+          <Link href={`/prof/${prof.bin}?type=about`}>{t("go")}</Link>
         )}
         <Accordion type="multiple" className="mt-4">
           {prof.children.map((d) => (

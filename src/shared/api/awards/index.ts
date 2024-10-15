@@ -8,7 +8,7 @@ export const CreateAward = (body: Award) => {
     body: { json: body },
   });
 };
-export const GetAwards = (id: string | null) => {
+export const GetAwards = (id: string | null | undefined) => {
   return customFetch({
     method: "GET",
     path: `awards-vacation-prof-member-id-view`,

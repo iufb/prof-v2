@@ -11,13 +11,15 @@ import { useForm } from "react-hook-form";
 export const CreatePassForm = () => {
   const t = useTranslations("createPassForm");
   const tGlobal = useTranslations();
-  const { mutate, isPending, error } = useMutation({
-    mutationKey: ["pass"],
-    mutationFn: CreatePass,
-    onSuccess: (data) => {
-      setPass(data.password);
+  const { mutate, isPending, error } = useMutation<any, { error: string }, any>(
+    {
+      mutationKey: ["pass"],
+      mutationFn: CreatePass,
+      onSuccess: (data) => {
+        setPass(data.password);
+      },
     },
-  });
+  );
   const isMutating = useIsMutating({ mutationKey: ["restore"] });
 
   const onSubmit = (data: { username: string }) => {

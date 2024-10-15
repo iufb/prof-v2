@@ -7,7 +7,7 @@ import {
   Reports,
 } from "@/src/entities/prof";
 import { useLocation } from "@/src/shared/hooks";
-import { Tabs, TabsList, TabsTrigger } from "@/src/shared/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/shared/ui";
 import { getCookie } from "cookies-next";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
@@ -51,7 +51,10 @@ export const ProfInfo = () => {
         </TabsList>
         <About />
         <CollegiateBodies />
-        <Apparatus />
+
+        <TabsContent value="apparatus">
+          <Apparatus />
+        </TabsContent>
         <Partners />
         <Reports />
       </Tabs>

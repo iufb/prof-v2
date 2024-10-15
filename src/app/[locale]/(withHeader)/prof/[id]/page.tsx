@@ -1,5 +1,5 @@
 import { ProfInfo } from "@/src/widgets";
 
-export default function ProfPage({ params }: { params: { id: string } }) {
+export default function ProfPage() {
   return <ProfInfo />;
 }

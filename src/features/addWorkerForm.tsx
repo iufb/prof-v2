@@ -24,7 +24,6 @@ import {
 import { Label } from "@/src/shared/ui/label";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
-import { useParams } from "next/navigation";
 import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 export const AddWorkerForm = () => {

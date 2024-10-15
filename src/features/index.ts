@@ -1,5 +1,6 @@
 export { LoginForm } from "./loginForm";
 export { SearchWorker } from "./SearchWorker";
+export { AddWorkersByFile } from "./AddWorkersByFile";
 export { RestoreButton } from "./restoreButton";
 export { SearchProf } from "./SearchProf";
 export { ProfNameSelect } from "./profNameSelect";

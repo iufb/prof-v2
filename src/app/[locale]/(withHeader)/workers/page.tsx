@@ -1,3 +1,9 @@
+import { Apparatus } from "@/src/entities/prof";
+
 export default function WorkersListPage() {
-  return <div>WorksersListPage</div>;
+  return (
+    <div>
+      <Apparatus />
+    </div>
+  );
 }

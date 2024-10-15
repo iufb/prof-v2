@@ -96,7 +96,7 @@ export const SearchProf = () => {
         <Button className="w-full">{t("page.btn")}</Button>
         <Button onClick={() => reset()}>{t("page.reset")}</Button>
       </form>
-      <section className="flex bg-slate-200 p-3 rounded-md min-h-32  mt-10 w-full flex-col gap-5">
+      <section className="flex bg-slate-200 p-3 rounded-md min-h-32  mt-10 w-full flex-col gap-5 mb-4 overflow-auto">
         {GetUI({
           status,
           ui:

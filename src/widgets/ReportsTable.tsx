@@ -22,6 +22,7 @@ import {
   TableRow,
 } from "@/src/shared/ui";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { File } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { ReactNode, useState } from "react";
@@ -123,7 +124,15 @@ export const ReportsTable = () => {
                 {reportsDate?.map((a, idx) => (
                   <TableRow key={idx}>
                     <TableCell className="text-center">{a.creator}</TableCell>
-                    <TableCell className="text-center">{a.document}</TableCell>
+                    <TableCell className="text-center">
+                      <a
+                        href={a.document}
+                        target="_blank"
+                        className="flex justify-center"
+                      >
+                        <File />
+                      </a>
+                    </TableCell>
                     <TableCell className="text-center">{a.status}</TableCell>
                     <TableCell className="text-center">
                       {a.creation_date}

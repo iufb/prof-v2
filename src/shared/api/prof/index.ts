@@ -17,8 +17,13 @@ export const SearchProfs = (query: Record<string, string>) => {
 export const GetAllProf = () => {
   return customFetch({ method: "GET", path });
 };
-export const GetTree = (id: string) => {
-  return customFetch({ method: "GET", path: `${path}${id}` });
+export const GetTree = async (id: string | null) => {
+  let bin = id;
+  if (!bin) {
+    const id = (await customFetch({ method: "GET", path }))[0].bin;
+    bin = id;
+  }
+  return customFetch({ method: "GET", path: `${path}${bin}` });
 };
 export const PatchProf = ({
   body,
@@ -29,7 +34,7 @@ export const PatchProf = ({
 }) => {
   return customFetch({
     method: "PATCH",
-    path: `${path}/${bin}/`,
+    path: `${path}${bin}/`,
     body: { json: body },
   });
 };

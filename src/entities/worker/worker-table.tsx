@@ -43,7 +43,7 @@ export const WorkerTable = ({ id }: { id: string }) => {
       <section className="flex justify-between">
         <Image
           className="rounded-md"
-          src={data.photo}
+          src={data.photo ?? "/1.png"}
           width={200}
           height={200}
           alt="photo"

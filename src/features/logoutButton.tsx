@@ -5,7 +5,7 @@ import { deleteCookie } from "cookies-next";
 import { LogOut } from "lucide-react";
 import { ComponentProps } from "react";
 
-interface LogoutButtonProps extends ComponentProps<"button"> {}
+type LogoutButtonProps = {} & ComponentProps<"button">;
 export const LogoutButton = ({ ...props }: LogoutButtonProps) => {
   const logout = () => {
     deleteCookie("role");

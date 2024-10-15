@@ -7,6 +7,20 @@ export const CreateWorker = (body: Record<string, string>) => {
     body: { multipart: body },
   });
 };
+export const UploadWithExcell = ({
+  bin,
+  body,
+}: {
+  body: Record<string, File | string>;
+  bin: string;
+}) => {
+  return customFetch({
+    method: "POST",
+    path: "upload-prof-members/",
+    body: { multipart: body },
+    query: { prof_id: bin },
+  });
+};
 export const PatchWorker = ({
   body,
   id,

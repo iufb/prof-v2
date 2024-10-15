@@ -6,7 +6,7 @@ const path = "vacation-view/";
 export const CreateVacation = (body: Vacation) => {
   return customFetch({ method: "POST", path, body: { json: body } });
 };
-export const GetVacations = (id: string | null) => {
+export const GetVacations = (id: string | null | undefined) => {
   return customFetch({
     method: "GET",
     path: `awards-vacation-prof-member-id-view`,

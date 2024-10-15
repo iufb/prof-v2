@@ -1,3 +1,5 @@
+import { Tree } from "@/src/widgets";
+
 export default function StructurePage() {
-  return <div>structure</div>;
+  return <Tree />;
 }

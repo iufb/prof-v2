@@ -22,11 +22,14 @@ import {
 } from "@/src/shared/ui";
 import { Label } from "@radix-ui/react-label";
 import { useQuery } from "@tanstack/react-query";
+import clsx from "clsx";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 import { ReactNode, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 export const SearchWorker = () => {
+  const id = useParams().id;
   const t = useTranslations("search");
   const tGlobal = useTranslations();
   const { router } = useLocation();
@@ -36,7 +39,10 @@ export const SearchWorker = () => {
   const { data: res, status } = useQuery({
     queryKey: ["searchworker", ...Object.values(search)],
     queryFn: async () => {
-      const data: Record<string, string>[] = await SearchWorkers(search);
+      const data: Record<string, string>[] = await SearchWorkers({
+        ...search,
+        prof_id: (id as string) ?? "",
+      });
       return data;
     },
     enabled: !!search,
@@ -47,6 +53,7 @@ export const SearchWorker = () => {
         delete data[d];
       }
     });
+
     setSearch(data);
   };
   const selects: { label: string; values: string[] }[] =
@@ -95,7 +102,12 @@ export const SearchWorker = () => {
         <Button className="w-full">{t("page.btn")}</Button>
         <Button onClick={() => reset()}>{t("page.reset")}</Button>
       </form>
-      <section className="flex bg-slate-200 p-3 rounded-md min-h-32  mt-10 w-full flex-col gap-5">
+      <section
+        className={clsx(
+          "flex  bg-slate-200 p-3 rounded-md min-h-32  mt-10 w-full flex-col gap-5",
+          res && res.length > 5 && "overflow-auto",
+        )}
+      >
         {GetUI({
           status,
           ui:
@@ -112,7 +124,7 @@ export const SearchWorker = () => {
                       {t("page.worker.number")}
                     </TableHead>
                     <TableHead className="text-center">
-                      {t("page.prof.position")}
+                      {t("page.worker.position")}
                     </TableHead>
                   </TableRow>
                 </TableHeader>
@@ -121,7 +133,7 @@ export const SearchWorker = () => {
                     <TableRow
                       className="cursor-pointer"
                       onClick={() => {
-                        router.push(`/prof/${r.bin}?type=about`);
+                        router.push(`/workers/${r.id}`);
                       }}
                       key={r.bin}
                     >

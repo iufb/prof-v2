@@ -1,5 +1,5 @@
 "use client";
-import { AddButton, AddWorkerForm } from "@/src/features";
+import { AddButton, AddWorkerForm, SearchButton } from "@/src/features";
 import { GetWorkersByBin } from "@/src/shared/api/worker";
 import { Link } from "@/src/shared/config/routing";
 import { useLocation } from "@/src/shared/hooks";
@@ -52,10 +52,13 @@ export const Apparatus = () => {
               {apparatusData?.length}
             </span>
           </section>
-          <AddButton
-            addForm={<AddWorkerForm />}
-            label={t("profApparatus.add")}
-          />
+          <section className="flex gap-4">
+            <SearchButton />
+            <AddButton
+              addForm={<AddWorkerForm />}
+              label={t("profApparatus.add")}
+            />
+          </section>
         </section>
         <Table>
           <TableHeader>

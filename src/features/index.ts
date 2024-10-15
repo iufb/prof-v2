@@ -3,6 +3,7 @@ export { SearchWorker } from "./SearchWorker";
 export { RestoreButton } from "./restoreButton";
 export { SearchProf } from "./SearchProf";
 export { ProfNameSelect } from "./profNameSelect";
+export { SearchButton } from "./searchButton";
 export { CreatePassForm } from "./createPassForm";
 export { DeleteButton } from "./deleteButton";
 export { LogoutButton } from "./logoutButton";

@@ -100,6 +100,21 @@ export const AddProfForm = () => {
           <Input
             {...register(inputKeys[idx], {
               required: tGlobal("forms.required"),
+              minLength:
+                inputKeys[idx] == "bin"
+                  ? {
+                      value: 12,
+                      message: tGlobal("forms.length", { c: 12 }),
+                    }
+                  : undefined,
+
+              maxLength:
+                inputKeys[idx] == "bin"
+                  ? {
+                      value: 12,
+                      message: tGlobal("forms.length", { c: 12 }),
+                    }
+                  : undefined,
             })}
             error={errors[inputKeys[idx]]?.message}
             key={input}

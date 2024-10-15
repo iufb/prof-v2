@@ -17,6 +17,9 @@ export const SearchProfs = (query: Record<string, string>) => {
 export const GetAllProf = () => {
   return customFetch({ method: "GET", path });
 };
+export const GetTree = (id: string) => {
+  return customFetch({ method: "GET", path: `${path}${id}` });
+};
 export const PatchProf = ({
   body,
   bin,

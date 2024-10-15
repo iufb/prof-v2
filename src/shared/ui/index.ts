@@ -1,5 +1,11 @@
 export { Button } from "./button";
 export { Alert, AlertTitle, AlertDescription } from "./alert";
+export {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "./accordion";
 export { Loader } from "./loader";
 export { Calendar } from "./calendar";
 export { SelectInput } from "./select-input";

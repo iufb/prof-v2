@@ -4,6 +4,7 @@ const withNextIntl = createNextIntlPlugin("./src/shared/config/request.ts");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "standalone",
   images: {
     formats: ["image/webp"],
     remotePatterns: [

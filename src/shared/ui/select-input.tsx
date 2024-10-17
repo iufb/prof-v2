@@ -31,7 +31,7 @@ export const SelectInput = ({
         <div className="relative">
           <button
             onClick={() => setOther(false)}
-            className="absolute right-0 cursor-pointer  text-sm text-start text-slate-400"
+            className="absolute  -top-5 md:top-0  right-0 cursor-pointer  text-sm text-start text-slate-400"
           >
             {t("change")}
           </button>

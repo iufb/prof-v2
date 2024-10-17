@@ -33,22 +33,24 @@ export const ProfInfo = () => {
         value={getSearchParam("type")}
         defaultValue={getSearchParam("type") ?? "about"}
       >
-        <TabsList className="gap-4 py-8 px-5 border border-slate-400">
-          {links.map((link) => {
-            return (
-              <TabsTrigger
-                key={link.href}
-                onClick={() =>
-                  onTabSelect(link.href.slice(16, link.href.length))
-                }
-                value={link.href.slice(16, link.href.length)}
-                className="text-lg"
-              >
-                {link.label}
-              </TabsTrigger>
-            );
-          })}
-        </TabsList>
+        <div className="overflow-x-auto">
+          <TabsList className="gap-4 py-8 px-5 border border-slate-400 ">
+            {links.map((link) => {
+              return (
+                <TabsTrigger
+                  key={link.href}
+                  onClick={() =>
+                    onTabSelect(link.href.slice(16, link.href.length))
+                  }
+                  value={link.href.slice(16, link.href.length)}
+                  className="text-lg"
+                >
+                  {link.label}
+                </TabsTrigger>
+              );
+            })}
+          </TabsList>
+        </div>
         <About />
         <CollegiateBodies />
 

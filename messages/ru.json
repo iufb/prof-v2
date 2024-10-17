@@ -24,6 +24,40 @@
             "prof": "Добавить Профсоюз",
             "pass": "Создать пароль"
         },
+        "mobileLinks": [
+            {
+                "label": "О Профсоюзе",
+                "href": "/prof/{id}?type=about"
+            },
+            {
+                "label": "Коллегиальные органы",
+                "href": "/prof/{id}?type=collegiate-bodies"
+            },
+            {
+                "label": "Аппарат",
+                "href": "/prof/{id}?type=apparatus"
+            },
+            {
+                "label": "Социальное партнерство",
+                "href": "/prof/{id}?type=partners"
+            },
+            {
+                "label": "Формы отчетов",
+                "href": "/prof/{id}?type=reports"
+            },
+            {
+                "label": "Члены профсоюза",
+                "href": "/workers"
+            },
+            {
+                "label": "Структура",
+                "href": "/structure"
+            },
+            {
+                "label": "Поиск",
+                "href": "/search?type=prof"
+            }
+        ],
         "links": [
             {
                 "label": "Профиль",

@@ -52,6 +52,7 @@ export const LoginForm = () => {
         placeholder={t("form.login")}
       />
       <Input
+        type="password"
         error={errors["password"]?.message}
         {...register("password", { required: tGlobal("forms.required") })}
         placeholder={t("form.password")}

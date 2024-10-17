@@ -7,18 +7,25 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/src/shared/ui";
+import { Burger } from "@/src/widgets/Burger";
 import clsx from "clsx";
 import { getTranslations } from "next-intl/server";
 
 export const Header = ({ isAdmin, id }: { isAdmin: boolean; id: string }) => {
   return (
-    <header className="max-w-[87.5rem] w-full mx-auto h-20 text-md flex items-center justify-start">
+    <header className="max-w-[87.5rem] w-full mx-auto h-20 text-md md:flex grid md:items-center md:justify-start">
       <Navbar id={id} isAdmin={isAdmin} />
+      <Burger />
     </header>
   );
 };
-
-const Navbar = async ({ isAdmin, id }: { isAdmin: boolean; id: string }) => {
+export const Navbar = async ({
+  isAdmin,
+  id,
+}: {
+  isAdmin: boolean;
+  id: string;
+}) => {
   const t = await getTranslations("navbar");
   const links: Array<{
     label: string;
@@ -26,7 +33,7 @@ const Navbar = async ({ isAdmin, id }: { isAdmin: boolean; id: string }) => {
     children?: { label: string; href: string }[];
   }> = t.raw("links");
   return (
-    <NavigationMenu className="flex-1 w-full mx-auto ">
+    <NavigationMenu className="flex-1 w-full mx-auto hidden md:block ">
       <NavigationMenuList className=" w-full gap-4 ">
         {links.map((link, idx) => (
           <NavigationMenuItem

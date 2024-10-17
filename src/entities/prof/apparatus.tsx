@@ -50,17 +50,18 @@ export const Apparatus = () => {
 
   return (
     <section>
-      <section className="flex justify-between">
-        <section className="px-3 py-2 flex gap-4 bg-slate-200 border border-slate-400 rounded-md w-fit">
+      <section className="flex flex-col  md:flex-row gap-3 md:gap-0 justify-between">
+        <section className="px-3 py-2 flex   gap-4 bg-slate-200 border border-slate-400 rounded-md w-fit">
           <span>{t("profApparatus.stats")}</span>
           <span className="px-3 rounded-md font-bold bg-white">
             {apparatusData?.length}
           </span>
         </section>
-        <section className="flex gap-4">
+        <section className="flex  gap-4">
           <SearchButton />
           {isAdmin && <AddWorkersByFile />}
           <AddButton
+            className="mb-0"
             addForm={<AddWorkerForm />}
             label={t("profApparatus.add")}
           />

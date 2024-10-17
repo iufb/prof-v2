@@ -54,15 +54,18 @@ export const Tree = () => {
 const Branch = ({ prof }: { prof: Prof }) => {
   const t = useTranslations("tree");
   return (
-    <AccordionItem value={prof.bin} className="ml-3">
-      <AccordionTrigger className="text-md font-bold ">
-        <section className="flex justify-between flex-1 mr-10">
+    <AccordionItem
+      value={prof.bin}
+      className="ml-3 mt-3 border-slate-300 border-[1.5px]"
+    >
+      <AccordionTrigger className="text-md font-bold  ">
+        <section className="flex justify-between flex-1 mr-2 lg:mr-10">
           <span>
             {prof.union_type} {prof.union_name}{" "}
           </span>
           {prof.children.length !== 0 && (
             <Link
-              className="p-2 rounded-md bg-black"
+              className="p-2 h-fit rounded-md bg-black "
               href={`/prof/${prof.bin}?type=about`}
             >
               <Eye color="white" aria-label="visit" />

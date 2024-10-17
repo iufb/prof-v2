@@ -54,10 +54,10 @@ export const EditProfForm = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex mx-5 text-lg md:mx-0 flex-col gap-4 p-4 bg-slate-100 border border-slate-300 rounded-sm"
+      className="flex overflow-auto max-h-[calc(100vh-5rem)]  mx-5 text-lg md:mx-0 flex-col gap-4 p-4 bg-slate-100 border border-slate-300 rounded-sm"
     >
       <h1 className="text-3xl">{t("edit.title")}</h1>
-      <section className="grid grid-cols-2 gap-3">
+      <section className=" grid grid-cols-1 md:grid-cols-2 gap-3">
         {selects.map((select, idx) => (
           <Controller
             key={select.label}

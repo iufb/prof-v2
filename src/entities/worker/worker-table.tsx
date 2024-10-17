@@ -39,7 +39,7 @@ export const WorkerTable = ({ id }: { id: string }) => {
 
   return (
     <section className="flex flex-col gap-5 mt-3">
-      <section className="flex justify-between">
+      <section className="flex flex-col md:flex-row gap-3 justify-between">
         <Image
           className="rounded-md"
           src={data.photo ?? "/1.png"}

@@ -53,7 +53,7 @@ export const AddReportForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex mx-5 text-lg md:mx-0 flex-col gap-4 p-4 bg-slate-100 border border-slate-300 rounded-sm"
     >
-      <section className="grid grid-cols-2 gap-4">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Controller
           control={control}
           name={"report_type"}

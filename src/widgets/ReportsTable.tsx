@@ -74,10 +74,10 @@ export const ReportsTable = () => {
   return (
     <section>
       <Select onValueChange={filterBodies} value={type}>
-        <SelectTrigger className="w-full bg-white mb-5">
+        <SelectTrigger className="w-72 md:w-full  bg-white mb-5">
           <SelectValue placeholder={types.label} />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="w-72 md:w-full">
           {types.values.map((value) => (
             <SelectItem key={value} value={value}>
               {value}

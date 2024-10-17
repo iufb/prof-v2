@@ -30,7 +30,7 @@ export const EditButton = ({ editForm, label, className }: EditButtonProps) => {
       >
         {t("title")} {label}
       </DialogTrigger>
-      <DialogContent className="min-w-[55vw] bg-white">
+      <DialogContent className="min-w-[55vw] max-h-[calc(100vh - 3rem)] overflow-auto mt-3 bg-white">
         <DialogHeader>
           <DialogTitle>
             {t("title")} {label}
@@ -39,7 +39,7 @@ export const EditButton = ({ editForm, label, className }: EditButtonProps) => {
             {t("desc")} {label}
           </DialogDescription>
         </DialogHeader>
-        <div>{editForm}</div>
+        {editForm}
       </DialogContent>
     </Dialog>
   );

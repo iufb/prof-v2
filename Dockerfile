@@ -39,7 +39,7 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-ARG NEXT_PUBLICBACKEND_URL
+ARG NEXT_PUBLIC_BACKENDURL
 RUN echo "NEXT_PUBLIC_BACKENDURL=\"$NEXT_PUBLIC_BACKENDURL\"" > .env
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1

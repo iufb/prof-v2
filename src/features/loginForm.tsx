@@ -8,6 +8,8 @@ import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 export const LoginForm = () => {
+  console.log(process.env.NEXT_PUBLIC_BACKENDURL);
+
   const { router } = useLocation();
   const { mutate, isPending, isError } = useMutation({
     mutationKey: ["login"],
@@ -27,6 +29,7 @@ export const LoginForm = () => {
   const t = useTranslations("login");
   const tGlobal = useTranslations();
   const onSubmit = (data: { username: string; password: string }) => {
+    console.log(process.env.NEXT_PUBLIC_BACKENDURL);
     mutate(data);
     deleteCookie("role");
     deleteCookie("token");

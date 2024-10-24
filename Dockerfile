@@ -1,5 +1,5 @@
 # Используем базовый образ
-FROM node:20
+FROM node:18-alpine
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Устанавливаем зависимости
-RUN npm install
+RUN yarn --frozen-lockfile
 
 # Копируем остальной код приложения
 COPY . .
@@ -20,9 +20,9 @@ RUN echo "NEXT_PUBLIC_BACKEND_URL=\"$NEXT_PUBLIC_BACKENDURL\"" > .env
 
 
 # Собираем проект (если необходимо)
-RUN npm run build
+RUN yarn run build
 
 # Экспонируем порт, который будет использоваться приложением
 EXPOSE 3000
 
-CMD ["npm","run","start"]
+CMD ["yarn","start"]

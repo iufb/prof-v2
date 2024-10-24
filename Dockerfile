@@ -15,7 +15,7 @@ COPY . .
 
 # Создаем .env файл из переменной окружения
 # Переменные окружения должны быть переданы на этапе сборки
-ARG NEXT_PUBLIC_BACKEND_URL
+ARG NEXT_PUBLIC_BACKENDURL
 RUN echo "NEXT_PUBLIC_BACKENDURL=\"$NEXT_PUBLIC_BACKENDURL\"" > .env
 
 

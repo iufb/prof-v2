@@ -1,13 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Label } from "./label";
 import {
-  Select as SelectUI,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  Select as SelectUI,
+  SelectValue,
 } from "@/src/shared/ui";
+import { Label } from "./label";
 interface SelectProps {
   value: any;
   onChange: (...event: any[]) => void;

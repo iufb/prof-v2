@@ -7,22 +7,23 @@ WORKDIR /app
 # Копируем файлы зависимостей
 COPY package*.json ./
 
-# Устанавливаем зависимости
-RUN yarn --frozen-lockfile
+# Устанавливаем зависимости и проверяем на ошибки
+RUN echo "Installing dependencies..." && \
+    yarn --frozen-lockfile || { echo "Dependency installation failed"; exit 1; }
 
 # Копируем остальной код приложения
 COPY . .
 
 # Создаем .env файл из переменной окружения
-# Переменные окружения должны быть переданы на этапе сборки
 ARG NEXT_PUBLIC_BACKENDURL
-RUN echo "NEXT_PUBLIC_BACKENDURL=\"$NEXT_PUBLIC_BACKENDURL\"" > .env
+RUN echo "NEXT_PUBLIC_BACKENDURL=\"$NEXT_PUBLIC_BACKENDURL\"" > .env || { echo "Failed to create .env file"; exit 1; }
 
-
-# Собираем проект (если необходимо)
-RUN yarn run build
+# Собираем проект и проверяем на ошибки
+RUN echo "Building project..." && \
+    yarn run build || { echo "Build failed"; exit 1; }
 
 # Экспонируем порт, который будет использоваться приложением
 EXPOSE 3000
 
-CMD ["yarn","start"]
+# Запускаем приложение
+CMD ["yarn", "start"]

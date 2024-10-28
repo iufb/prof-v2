@@ -3,12 +3,15 @@ import {
   AddButton,
   AddWorkerForm,
   AddWorkersByFile,
+  DeleteButton,
   SearchButton,
 } from "@/src/features";
-import { GetWorkersByBin } from "@/src/shared/api/worker";
+import { GetWorkersByBin, PatchWorker } from "@/src/shared/api/worker";
 import { Link } from "@/src/shared/config/routing";
 import { usePermission } from "@/src/shared/hooks";
+import { queryClient } from "@/src/shared/lib/client";
 import {
+  Button,
   Error,
   Loader,
   Table,
@@ -18,29 +21,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/shared/ui";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getCookie } from "cookies-next";
 import { Eye } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
 export const Apparatus = () => {
-  const bin = useParams().id ?? getCookie("id");
+  const id = useParams().id ?? getCookie("id");
 
   const {
     data: apparatusData,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: [`profApparatus ${bin}`],
+    queryKey: [`profApparatus ${id}`],
     queryFn: async () => {
       const data: Record<string, string>[] = await GetWorkersByBin(
-        bin as string,
+        id as string,
       );
-      return data;
+      return data.filter((w) => w.union_ticket_number !== "deleted");
     },
     refetchOnWindowFocus: false,
-    enabled: !!bin,
+    enabled: !!id,
+  });
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["delete worker"],
+    mutationFn: PatchWorker,
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({
+        queryKey: [`profApparatus ${id}`],
+      });
+    },
   });
   const t = useTranslations();
   const { isAdmin } = usePermission();
@@ -60,6 +72,12 @@ export const Apparatus = () => {
         <section className="flex  gap-4">
           <SearchButton />
           {isAdmin && <AddWorkersByFile />}
+          <Link
+            className="px-2 py-1 grid place-items-center bg-black text-white rounded-md text-center"
+            href={`/prof/${id}/archive`}
+          >
+            {t("archive")}
+          </Link>
           <AddButton
             className="mb-0"
             addForm={<AddWorkerForm />}
@@ -80,6 +98,11 @@ export const Apparatus = () => {
             <TableHead className="text-right">
               {t("profApparatus.visit")}
             </TableHead>
+            {isAdmin && (
+              <TableHead className="text-right">
+                {t("profApparatus.delete")}
+              </TableHead>
+            )}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -96,6 +119,25 @@ export const Apparatus = () => {
                   <Eye color="white" />
                 </Link>
               </TableCell>
+              {isAdmin && (
+                <TableCell className="text-end">
+                  <DeleteButton
+                    btn={
+                      <Button
+                        disabled={isPending}
+                        onClick={() =>
+                          mutate({
+                            id: a.id,
+                            body: { union_ticket_number: "deleted" },
+                          })
+                        }
+                      >
+                        {t("profApparatus.delete")}
+                      </Button>
+                    }
+                  />
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

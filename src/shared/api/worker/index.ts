@@ -45,6 +45,13 @@ export const GetWorker = (id: string) => {
     path: `prof-member-view/${id}`,
   });
 };
+export const DeleteWorker = (id: string) => {
+  return customFetch({
+    method: "DELETE",
+    path: `prof-member-view/${id}/`,
+  });
+};
+
 export const GetWorkersByBin = (bin: string) => {
   return customFetch({
     method: "GET",

@@ -12,11 +12,17 @@ import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import { ReactNode, useEffect, useState } from "react";
 interface EditButtonProps {
+  showTitle?: boolean;
   addForm: ReactNode;
   label: string;
   className?: string;
 }
-export const AddButton = ({ addForm, label, className }: EditButtonProps) => {
+export const AddButton = ({
+  showTitle = true,
+  addForm,
+  label,
+  className,
+}: EditButtonProps) => {
   const t = useTranslations("addBtn");
   const { isAdmin } = usePermission();
   const [isClient, setIsClient] = useState(false);
@@ -34,7 +40,7 @@ export const AddButton = ({ addForm, label, className }: EditButtonProps) => {
           className,
         )}
       >
-        {t("title")} {label}
+        {showTitle && t("title")} {label}
       </DialogTrigger>
       <DialogContent className="min-w-[55vw]  bg-white">
         <DialogHeader>

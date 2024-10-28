@@ -1,15 +1,18 @@
 "use client";
-import { GetTree } from "@/src/shared/api/prof";
+import { DeleteButton } from "@/src/features";
+import { DeleteProf, GetTree } from "@/src/shared/api/prof";
 import { Link } from "@/src/shared/config/routing";
+import { queryClient } from "@/src/shared/lib/client";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  Button,
   Error,
   Loader,
 } from "@/src/shared/ui";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getCookie } from "cookies-next";
 import { Eye } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -55,6 +58,15 @@ export const Tree = () => {
 
 const Branch = ({ prof }: { prof: Prof }) => {
   const t = useTranslations("tree");
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["delete prof"],
+    mutationFn: DeleteProf,
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({
+        queryKey: [`tree`],
+      });
+    },
+  });
   return (
     <AccordionItem
       value={prof.union_name}
@@ -77,14 +89,23 @@ const Branch = ({ prof }: { prof: Prof }) => {
               <span className="text-gray-900">{prof.union_name}</span>
             </span>
           </div>
-          {prof.children.length !== 0 && (
-            <Link
-              className="p-2 h-fit rounded-md bg-black "
-              href={`/prof/${prof.id}?type=about`}
-            >
-              <Eye color="white" aria-label="visit" />
-            </Link>
-          )}
+          <div className="flex flex-col md:flex-row gap-3">
+            {prof.children.length !== 0 && (
+              <Link
+                className="p-2 h-fit rounded-md bg-black "
+                href={`/prof/${prof.id}?type=about`}
+              >
+                <Eye color="white" aria-label="visit" />
+              </Link>
+            )}
+            <DeleteButton
+              btn={
+                <Button disabled={isPending} onClick={() => mutate(prof.id)}>
+                  {t("delete")}
+                </Button>
+              }
+            />
+          </div>
         </section>
       </AccordionTrigger>
       <AccordionContent className="">

@@ -53,7 +53,7 @@ export const SearchWorker = () => {
         ...search,
         prof_id: (id as string) ?? "",
       });
-      return data;
+      return data.filter((w) => w.union_ticket_number !== "deleted");
     },
     enabled: Object.keys(search).length > 0,
   });

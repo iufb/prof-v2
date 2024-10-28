@@ -15,6 +15,7 @@ import { Eye } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 export interface Prof {
+  id: number;
   bin: string;
   industry: string;
   higher_union_org: string;
@@ -41,9 +42,10 @@ export const Tree = () => {
     <section className="flex flex-col gap-4">
       {GetUI({
         status,
+        length: data ? data.length : 0,
         ui: (
           <Accordion type="multiple" className="">
-            {data && data.map((d) => <Branch key={d.bin} prof={d} />)}
+            {data && data.map((d) => <Branch key={d.id} prof={d} />)}
           </Accordion>
         ),
       })}
@@ -55,18 +57,30 @@ const Branch = ({ prof }: { prof: Prof }) => {
   const t = useTranslations("tree");
   return (
     <AccordionItem
-      value={prof.bin}
+      value={prof.union_name}
       className="ml-3 mt-3 border-slate-300 border-[1.5px]"
     >
       <AccordionTrigger className="text-md font-bold  ">
-        <section className="flex justify-between flex-1 mr-2 lg:mr-10">
-          <span>
-            {prof.union_type} {prof.union_name}{" "}
-          </span>
+        <section className="flex justify-between items-center flex-1 mr-2 lg:mr-10">
+          <div className="flex flex-col gap-2 text-start">
+            <span className="text-gray-500">
+              {t("type")} -{" "}
+              <span className="text-gray-900">{prof.union_type}</span>
+            </span>
+            <span className="text-gray-500">
+              {t("industry")} -{" "}
+              <span className="text-gray-900">{prof.industry}</span>
+            </span>
+
+            <span className="text-gray-500">
+              {t("name")} -{" "}
+              <span className="text-gray-900">{prof.union_name}</span>
+            </span>
+          </div>
           {prof.children.length !== 0 && (
             <Link
               className="p-2 h-fit rounded-md bg-black "
-              href={`/prof/${prof.bin}?type=about`}
+              href={`/prof/${prof.id}?type=about`}
             >
               <Eye color="white" aria-label="visit" />
             </Link>
@@ -74,25 +88,38 @@ const Branch = ({ prof }: { prof: Prof }) => {
         </section>
       </AccordionTrigger>
       <AccordionContent className="">
-        {prof.children.length == 0 && (
-          <Link href={`/prof/${prof.bin}?type=about`}>{t("go")}</Link>
+        {prof.children.length == 0 ? (
+          <Link href={`/prof/${prof.id}?type=about`}>{t("go")}</Link>
+        ) : (
+          <Accordion type="multiple" className="mt-4">
+            {prof.children.map((d) => (
+              <Branch key={d.id} prof={d} />
+            ))}
+          </Accordion>
         )}
-        <Accordion type="multiple" className="mt-4">
-          {prof.children.map((d) => (
-            <Branch key={d.bin} prof={d} />
-          ))}
-        </Accordion>
       </AccordionContent>
     </AccordionItem>
   );
 };
-const GetUI = ({ status: status, ui }: { status: string; ui: ReactNode }) => {
+const GetUI = ({
+  status: status,
+  ui,
+  length,
+}: {
+  status: string;
+  ui: ReactNode;
+  length: number;
+}) => {
   const tGlobal = useTranslations();
   switch (status) {
     case "pending":
       return <Loader />;
     case "error":
-      return <Error className="p-3">{tGlobal("get.error")}</Error>;
+      return length == 0 ? (
+        <span>{tGlobal("tree.notFound")}</span>
+      ) : (
+        <Error className="p-3">{tGlobal("get.error")}</Error>
+      );
     case "success":
       return ui;
   }

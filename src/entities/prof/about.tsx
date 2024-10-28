@@ -9,20 +9,20 @@ import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
 export const About = () => {
-  const bin = useParams().id as string;
+  const id = useParams().id as string;
   const { getSearchParam } = useLocation();
   const {
     data: profData,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: [`profAbout ${bin}`],
+    queryKey: [`profAbout ${id}`],
     queryFn: async () => {
-      const data = await GetProf(bin as string);
+      const data = await GetProf(id as string);
       return data;
     },
     refetchOnWindowFocus: false,
-    enabled: !!bin && getSearchParam("type") == "about",
+    enabled: !!id && getSearchParam("type") == "about",
   });
   const t = useTranslations();
   if (isLoading) return <Loader />;

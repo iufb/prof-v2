@@ -91,7 +91,7 @@ export const ReportsTable = () => {
           !reportsDate || reportsDate.length == 0 ? (
             <NotFound>{tGlobal("zero")}</NotFound>
           ) : (
-            <Table>
+            <Table className="overflow-x-auto">
               <TableHeader>
                 <TableRow>
                   <TableHead className="text-center">

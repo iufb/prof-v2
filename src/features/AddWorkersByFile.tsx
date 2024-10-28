@@ -19,7 +19,7 @@ import { useParams } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 export const AddWorkersByFile = () => {
-  const bin = useParams().id;
+  const id = useParams().id;
   const t = useTranslations("workerForm");
   const tGlobal = useTranslations("");
   const {
@@ -32,12 +32,12 @@ export const AddWorkersByFile = () => {
     mutationFn: UploadWithExcell,
     onSettled: async () => {
       return await queryClient.invalidateQueries({
-        queryKey: [`profApparatus ${bin}`],
+        queryKey: [`profApparatus ${id}`],
       });
     },
   });
   const onSubmin: SubmitHandler<Record<string, any>> = (data) => {
-    mutate({ body: { file: data.file[0] }, bin: bin as string });
+    mutate({ body: { file: data.file[0] }, bin: id.toString() as string });
   };
   return (
     <Dialog>

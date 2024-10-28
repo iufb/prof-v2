@@ -18,12 +18,7 @@ export const GetAllProf = () => {
   return customFetch({ method: "GET", path });
 };
 export const GetTree = async (id: string | null) => {
-  let bin = id;
-  if (!bin) {
-    const id = (await customFetch({ method: "GET", path }))[0].bin;
-    bin = id;
-  }
-  return customFetch({ method: "GET", path: `${path}${bin}` });
+  return customFetch({ method: "GET", path: `${path}${id ? id : 1}` });
 };
 export const PatchProf = ({
   body,

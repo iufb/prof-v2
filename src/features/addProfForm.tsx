@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ProfNameSelect } from "@/src/features/profNameSelect";
 import { CreateProf } from "@/src/shared/api/prof";
 import { useLocation } from "@/src/shared/hooks";
+import { isRequired } from "@/src/shared/lib/utils";
 import {
   Button,
   Error,
@@ -30,7 +31,7 @@ export const AddProfForm = () => {
       toast({
         title: tGlobal("toast.create"),
       });
-      router.push(`prof/${data.bin}?type=about`);
+      router.push(`prof/${data.id}?type=about`);
     },
     onError: () => {
       toast({ title: tGlobal("toast.error") });
@@ -98,7 +99,9 @@ export const AddProfForm = () => {
         {inputs.map((input, idx) => (
           <Input
             {...register(inputKeys[idx], {
-              required: tGlobal("forms.required"),
+              required: isRequired(inputKeys[idx], unrequired)
+                ? undefined
+                : tGlobal("forms.required"),
               minLength:
                 inputKeys[idx] == "bin"
                   ? {
@@ -140,5 +143,13 @@ const inputKeys = [
   "website", // Сайт
   "email", // e-mail
   "chairman_name", // Председатель (ФИО руководителя)
+];
+const unrequired = [
+  "bin",
+  "addres",
+  "phone",
+  "email",
+  "website",
+  "chairman_name",
 ];
 type FormFields = Record<string, string>;

@@ -1,7 +1,8 @@
 import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin("./src/shared/config/request.ts");
-
+const url = process.env.NEXT_PUBLIC_BACKENDURL || "";
+const hostname = new URL(url).hostname;
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
@@ -10,7 +11,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "http",
-        hostname: "yekinsgnhome.ddns.net",
+        hostname,
       },
     ],
   },

@@ -8,3 +8,6 @@ export const DeleteFieldsFromObj = (
 
   return obj;
 };
+export const isRequired = (key: string, keysArr: string[]) => {
+  return keysArr.includes(key);
+};

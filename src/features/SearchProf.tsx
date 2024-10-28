@@ -4,15 +4,11 @@ import { SearchProfs } from "@/src/shared/api/prof";
 import { useLocation } from "@/src/shared/hooks";
 import {
   Button,
+  CustomSelect,
   Error,
   Input,
   Loader,
   NotFound,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -20,7 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/shared/ui";
-import { Label } from "@radix-ui/react-label";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { ReactNode, useState } from "react";
@@ -30,8 +25,18 @@ export const SearchProf = () => {
   const t = useTranslations("search");
   const tGlobal = useTranslations();
   const { router } = useLocation();
-  const { handleSubmit, register, control, reset } =
-    useForm<Record<string, string>>();
+  const { handleSubmit, register, control, reset } = useForm<
+    Record<string, string>
+  >({
+    defaultValues: {
+      union_name: "",
+      bin: "",
+      chairman_name: "",
+      higher_union_org: "",
+      industry: "",
+      union_type: "",
+    },
+  });
   const [search, setSearch] = useState<Record<string, string>>({});
   const { data: res, status } = useQuery({
     queryKey: ["searchprof", ...Object.values(search)],
@@ -74,21 +79,12 @@ export const SearchProf = () => {
               control={control}
               name={selectKeys[idx]}
               render={({ field: { onChange, value } }) => (
-                <div className="flex  flex-col gap-2">
-                  <Label className="text-md ">{select.label}</Label>
-                  <Select onValueChange={onChange} value={value}>
-                    <SelectTrigger className="w-full bg-white">
-                      <SelectValue placeholder={select.label} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {select.values.map((value) => (
-                        <SelectItem key={value} value={value}>
-                          {value}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                <CustomSelect
+                  value={value}
+                  onChange={onChange}
+                  label={select.label}
+                  content={select.values}
+                />
               )}
             />
           ))}
@@ -122,7 +118,7 @@ export const SearchProf = () => {
                     <TableRow
                       className="cursor-pointer"
                       onClick={() => {
-                        router.push(`/prof/${r.bin}?type=about`);
+                        router.push(`/prof/${r.id}?type=about`);
                       }}
                       key={r.bin}
                     >

@@ -8,12 +8,12 @@ export const VerticalTable = ({ labels, values }: VerticalTableProps) => {
       {labels.map((l, key) => (
         <li
           key={key}
-          className="flex flex-col md:flex-row items-center rounded-sm border border-slate-300"
+          className="flex flex-col md:grid md:grid-cols-[30vw,1fr] items-center rounded-sm border border-slate-300"
         >
-          <span className="text-lg text-center md:text-start w-full bg-gray-100 px-2 py-1  md:w-[40%]">
+          <span className="text-lg text-center md:text-start w-full bg-gray-200 px-2 py-1  ">
             {l}
           </span>
-          <span className="pl-2 text-md">{values[key]}</span>
+          <span className="px-2 text-md">{values[key]}</span>
         </li>
       ))}
     </ul>

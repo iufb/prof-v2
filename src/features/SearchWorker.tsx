@@ -4,15 +4,11 @@ import { SearchWorkers } from "@/src/shared/api/worker";
 import { useLocation } from "@/src/shared/hooks";
 import {
   Button,
+  CustomSelect,
   Error,
   Input,
   Loader,
   NotFound,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -20,7 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/shared/ui";
-import { Label } from "@radix-ui/react-label";
 import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
@@ -33,10 +28,25 @@ export const SearchWorker = () => {
   const t = useTranslations("search");
   const tGlobal = useTranslations();
   const { router } = useLocation();
-  const { handleSubmit, register, control, reset } =
-    useForm<Record<string, string>>();
+  const { handleSubmit, register, control, reset } = useForm<
+    Record<string, string>
+  >({
+    defaultValues: {
+      name: "",
+      union_ticket_number: "",
+      birth_date: "",
+      gender: "",
+      role: "",
+      education: "",
+      position: "",
+    },
+  });
   const [search, setSearch] = useState<Record<string, string>>({});
-  const { data: res, status } = useQuery({
+  const {
+    data: res,
+    status,
+    isLoading,
+  } = useQuery({
     queryKey: ["searchworker", ...Object.values(search)],
     queryFn: async () => {
       const data: Record<string, string>[] = await SearchWorkers({
@@ -45,8 +55,9 @@ export const SearchWorker = () => {
       });
       return data;
     },
-    enabled: !!search,
+    enabled: Object.keys(search).length > 0,
   });
+
   const onSubmit: SubmitHandler<Record<string, string>> = (data) => {
     Object.keys(data).forEach((d) => {
       if (!data[d]) {
@@ -58,6 +69,7 @@ export const SearchWorker = () => {
   };
   const selects: { label: string; values: string[] }[] =
     tGlobal.raw("workerForm.selects");
+
   return (
     <section className="">
       <form
@@ -79,28 +91,28 @@ export const SearchWorker = () => {
               key={select.label}
               control={control}
               name={selectKeys[idx]}
-              render={({ field: { onChange, value } }) => (
-                <div className="flex  flex-col gap-2">
-                  <Label className="text-md ">{select.label}</Label>
-                  <Select onValueChange={onChange} value={value}>
-                    <SelectTrigger className="w-full bg-white">
-                      <SelectValue placeholder={select.label} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {select.values.map((value) => (
-                        <SelectItem key={value} value={value}>
-                          {value}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <CustomSelect
+                    key={idx}
+                    value={value}
+                    onChange={onChange}
+                    label={select.label}
+                    content={select.values}
+                  />
+                );
+              }}
             />
           ))}
         </section>
         <Button className="w-full">{t("page.btn")}</Button>
-        <Button onClick={() => reset()}>{t("page.reset")}</Button>
+        <Button
+          onClick={() => {
+            reset();
+          }}
+        >
+          {t("page.reset")}
+        </Button>
       </form>
       <section
         className={clsx(
@@ -110,6 +122,7 @@ export const SearchWorker = () => {
       >
         {GetUI({
           status,
+          isLoading,
           ui:
             res?.length == 0 ? (
               <NotFound>Не найдено</NotFound>
@@ -155,11 +168,19 @@ export const SearchWorker = () => {
   );
 };
 
-const GetUI = ({ status: status, ui }: { status: string; ui: ReactNode }) => {
+const GetUI = ({
+  status: status,
+  ui,
+  isLoading,
+}: {
+  status: string;
+  ui: ReactNode;
+  isLoading: boolean;
+}) => {
   const tGlobal = useTranslations();
   switch (status) {
     case "pending":
-      return <Loader />;
+      return isLoading ? <Loader /> : <></>;
     case "error":
       return <Error className="p-3">{tGlobal("get.error")}</Error>;
     case "success":

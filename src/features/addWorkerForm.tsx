@@ -5,6 +5,7 @@ import { AddVacationForm } from "@/src/features/addVacationForm";
 import { CreateWorker } from "@/src/shared/api/worker";
 import { useLocation } from "@/src/shared/hooks";
 import { queryClient } from "@/src/shared/lib/client";
+import { isRequired } from "@/src/shared/lib/utils";
 import {
   Button,
   Dialog,
@@ -59,12 +60,12 @@ export const AddWorkerForm = () => {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<FormFields>();
+  } = useForm<FormFields>({ defaultValues: { photo: "" } });
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     if (params.id) {
       mutate({
         ...data,
-        photo: data.photo[0],
+        photo: data.photo[0] ? data.photo[0] : "",
         prof_id: params.id as string,
       });
     }
@@ -90,7 +91,9 @@ export const AddWorkerForm = () => {
           {inputs.map((input, idx) => (
             <Input
               {...register(inputKeys[idx], {
-                required: tGlobal("forms.required"),
+                required: isRequired(inputKeys[idx], unrequired)
+                  ? undefined
+                  : tGlobal("forms.required"),
               })}
               error={errors[inputKeys[idx]]?.message}
               key={input}
@@ -101,7 +104,11 @@ export const AddWorkerForm = () => {
             <Controller
               key={select.label}
               control={control}
-              rules={{ required: tGlobal("forms.required") }}
+              rules={{
+                required: isRequired(selectKeys[idx], unrequired)
+                  ? undefined
+                  : tGlobal("forms.required"),
+              }}
               name={selectKeys[idx]}
               render={({ field: { onChange, value } }) => (
                 <div>
@@ -186,5 +193,7 @@ const dateKeys = [
 const selectKeys = ["gender", "position", "role", "education"];
 const fileKeys = ["photo"];
 const inputKeys = ["name", "union_ticket_number", "phone", "email"];
+
+const unrequired = ["email", "union_ticket_number", "role"];
 
 type FormFields = Record<string, string>;

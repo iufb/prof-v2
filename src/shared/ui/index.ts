@@ -8,6 +8,7 @@ export {
 } from "./accordion";
 export { Loader } from "./loader";
 export { SelectInput } from "./select-input";
+export { Select as CustomSelect } from "./select";
 export { Input } from "./input";
 export { NotFound } from "./not-found";
 export {
@@ -43,7 +44,7 @@ export {
   SelectSeparator,
   SelectScrollUpButton,
   SelectScrollDownButton,
-} from "./select";
+} from "./select-shadcn";
 export {
   navigationMenuTriggerStyle,
   NavigationMenu,

@@ -12,7 +12,7 @@ export default async function Page({
   const t = await getTranslations("search");
   const tabs: Array<{ label: string; value: string }> = t.raw("page.tabs");
   return (
-    <section className="w-full    ">
+    <section className="w-full px-3">
       <Tabs value={searchParams.type} defaultValue={searchParams.type}>
         <TabsList className="gap-4 py-8 px-5 border border-slate-400 ">
           {tabs.map((t) => (

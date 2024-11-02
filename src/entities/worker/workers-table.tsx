@@ -22,10 +22,10 @@ export const WorkersTable = () => {
   const t = useTranslations();
   const {
     data: apparatusData,
-    isLoading,
+    isFetching,
     isError,
   } = useQuery({
-    queryKey: [`profApparatus ${id}`],
+    queryKey: [`archive ${id}`],
     queryFn: async () => {
       const data: Record<string, string>[] = await GetWorkersByBin(
         id as string,
@@ -35,7 +35,7 @@ export const WorkersTable = () => {
     refetchOnWindowFocus: false,
     enabled: !!id,
   });
-  if (isLoading) return <Loader />;
+  if (isFetching) return <Loader />;
   if (isError)
     return <Error className="block text-lg mt-10">{t("get.error")}</Error>;
 

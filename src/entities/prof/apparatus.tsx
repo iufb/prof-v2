@@ -32,7 +32,8 @@ export const Apparatus = () => {
 
   const {
     data: apparatusData,
-    isLoading,
+    isFetching,
+    isRefetching,
     isError,
   } = useQuery({
     queryKey: [`profApparatus ${id}`],
@@ -56,7 +57,7 @@ export const Apparatus = () => {
   });
   const t = useTranslations();
   const { isAdmin } = usePermission();
-  if (isLoading) return <Loader />;
+  if (isFetching || isRefetching) return <Loader />;
   if (isError)
     return <Error className="block text-lg mt-10">{t("get.error")}</Error>;
 
@@ -73,7 +74,7 @@ export const Apparatus = () => {
           <SearchButton />
           {isAdmin && <AddWorkersByFile />}
           <Link
-            className="px-2 py-1 grid place-items-center bg-black text-white rounded-md text-center"
+            className="px-2 py-1 max-h-[36px] font-bold grid place-items-center bg-black text-white rounded-md text-center"
             href={`/prof/${id}/archive`}
           >
             {t("archive")}

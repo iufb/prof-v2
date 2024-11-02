@@ -20,71 +20,122 @@ import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+const filterWorkers = (
+  list: Record<string, string>[] | undefined,
+  searchTerms: Record<string, string>,
+) => {
+  if (!list) return [];
 
+  return list.filter((rec) => {
+    const isValid = Object.entries(searchTerms).every(([key, value]) => {
+      if (!value) return true; // Skip empty search terms
+
+      // Handle filtering by day, month, and year for the birth_date field
+      if (["day", "month", "year"].includes(key)) {
+        const [year, month, day] = rec.birth_date
+          ? rec.birth_date.split("-")
+          : ["", "", ""];
+        if (key === "day") return day === value;
+        if (key === "month") return month === value;
+        if (key === "year") return year === value;
+      }
+
+      // Default string comparison for other fields
+      return rec[key]?.toLowerCase().includes(value.toLowerCase());
+    });
+
+    return isValid;
+  });
+};
 export const SearchWorker = () => {
   const id = useParams().id;
   const t = useTranslations("search");
   const tGlobal = useTranslations();
   const { router } = useLocation();
-  const { handleSubmit, register, control, reset } = useForm<
-    Record<string, string>
-  >({
+  const {
+    handleSubmit,
+    register,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<Record<string, string>>({
     defaultValues: {
       name: "",
       union_ticket_number: "",
-      birth_date: "",
+      day: "",
+      month: "",
+      year: "",
       gender: "",
       role: "",
       education: "",
       position: "",
     },
   });
-  const [search, setSearch] = useState<Record<string, string>>({});
   const {
     data: res,
     status,
     isLoading,
   } = useQuery({
-    queryKey: ["searchworker", ...Object.values(search)],
+    queryKey: ["searchworker"],
     queryFn: async () => {
       const data: Record<string, string>[] = await SearchWorkers({
-        ...search,
         prof_id: (id as string) ?? "",
       });
       return data.filter((w) => w.union_ticket_number !== "deleted");
     },
-    enabled: Object.keys(search).length > 0,
   });
-
+  const [result, setResult] = useState<Record<string, string>[]>([]);
   const onSubmit: SubmitHandler<Record<string, string>> = (data) => {
-    Object.keys(data).forEach((d) => {
-      if (!data[d]) {
-        delete data[d];
-      }
-    });
-
-    setSearch(data);
+    const isSearchEmpty = Object.values(data).every((value) => value === "");
+    if (isSearchEmpty) return;
+    const filteredResults = filterWorkers(res, data);
+    setResult(filteredResults);
   };
+
   const selects: { label: string; values: string[] }[] =
     tGlobal.raw("workerForm.selects");
 
   return (
     <section className="">
+      <span className="py-3 text-gray-400">{t("page.worker.hint")}</span>
       <form
         className="w-full flex flex-col gap-3"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <section className="grid grid-cols-3 gap-4">
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Input placeholder={t("page.worker.name")} {...register("name")} />
           <Input
             placeholder={t("page.worker.number")}
             {...register("union_ticket_number")}
           />
           <Input
-            placeholder={t("page.worker.date")}
-            {...register("birth_date")}
+            placeholder={t("page.worker.date.day")}
+            type="number"
+            error={errors["day"]?.message}
+            {...register("day", {
+              minLength: { value: 2, message: t("page.worker.date.error") },
+              maxLength: { value: 2, message: t("page.worker.date.error") },
+            })}
+          />
+          <Input
+            placeholder={t("page.worker.date.month")}
+            type="number"
+            error={errors["month"]?.message}
+            {...register("month", {
+              minLength: { value: 2, message: t("page.worker.date.error") },
+              maxLength: { value: 2, message: t("page.worker.date.error") },
+            })}
+          />
+          <Input
+            placeholder={t("page.worker.date.year")}
+            type="number"
+            error={errors["year"]?.message}
+            {...register("year", {
+              minLength: { value: 4, message: t("page.worker.date.error") },
+              maxLength: { value: 4, message: t("page.worker.date.error") },
+            })}
           />
           {selects.map((select, idx) => (
             <Controller
@@ -109,6 +160,7 @@ export const SearchWorker = () => {
         <Button
           onClick={() => {
             reset();
+            setResult([]);
           }}
         >
           {t("page.reset")}
@@ -117,14 +169,14 @@ export const SearchWorker = () => {
       <section
         className={clsx(
           "flex  bg-slate-200 p-3 rounded-md min-h-32  mt-10 w-full flex-col gap-5",
-          res && res.length > 5 && "overflow-auto mb-4",
+          result && result.length > 5 && "overflow-auto mb-4",
         )}
       >
         {GetUI({
           status,
           isLoading,
           ui:
-            res?.length == 0 ? (
+            result.length == 0 ? (
               <NotFound>Не найдено</NotFound>
             ) : (
               <Table>
@@ -142,13 +194,13 @@ export const SearchWorker = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {res?.map((r) => (
+                  {result.map((r) => (
                     <TableRow
                       className="cursor-pointer"
                       onClick={() => {
                         router.push(`/workers/${r.id}`);
                       }}
-                      key={r.bin}
+                      key={r.id}
                     >
                       <TableCell className="text-center">{r.name}</TableCell>
                       <TableCell className="text-center">

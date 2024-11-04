@@ -20,7 +20,7 @@ import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 const filterWorkers = (
   list: Record<string, string>[] | undefined,

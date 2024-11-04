@@ -81,9 +81,7 @@ export const EditWorkerForm = ({
 
           {inputs.map((input, idx) => (
             <Input
-              {...register(inputKeys[idx], {
-                required: tGlobal("forms.required"),
-              })}
+              {...register(inputKeys[idx], {})}
               error={errors[inputKeys[idx]]?.message}
               key={input}
               placeholder={input}
@@ -93,7 +91,6 @@ export const EditWorkerForm = ({
             <Controller
               key={select.label}
               control={control}
-              rules={{ required: tGlobal("forms.required") }}
               name={selectKeys[idx]}
               render={({ field: { onChange, value } }) => (
                 <div>
@@ -131,7 +128,6 @@ export const EditWorkerForm = ({
               key={date}
               control={control}
               name={dateKeys[idx]}
-              rules={{ required: tGlobal("forms.required") }}
               render={({ field: { onChange, value } }) => (
                 <div className="flex flex-col gap-3">
                   <Label className="text-md" htmlFor={date}>

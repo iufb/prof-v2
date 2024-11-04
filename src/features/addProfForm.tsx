@@ -59,7 +59,11 @@ export const AddProfForm = () => {
           <Controller
             key={select.label}
             control={control}
-            rules={{ required: tGlobal("forms.required") }}
+            rules={{
+              required: isRequired(selectKeys[idx], unrequired)
+                ? undefined
+                : tGlobal("forms.required"),
+            }}
             name={selectKeys[idx]}
             render={({ field: { onChange, value } }) => (
               <div className="flex  flex-col gap-2">
@@ -145,6 +149,7 @@ const inputKeys = [
   "chairman_name", // Председатель (ФИО руководителя)
 ];
 const unrequired = [
+  "industry",
   "bin",
   "addres",
   "phone",

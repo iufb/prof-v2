@@ -36,7 +36,7 @@ export const EditProfForm = ({
 
     onSettled: async () => {
       return await queryClient.invalidateQueries({
-        queryKey: [`profAbout ${profData.bin}`],
+        queryKey: [`profAbout ${profData.id}`],
       });
     },
   });
@@ -49,7 +49,7 @@ export const EditProfForm = ({
     formState: { errors },
   } = useForm<FormFields>({ defaultValues: profData });
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    mutate({ body: data, bin: profData.bin });
+    mutate({ body: data, bin: profData.id });
   };
   return (
     <form
@@ -62,7 +62,6 @@ export const EditProfForm = ({
           <Controller
             key={select.label}
             control={control}
-            rules={{ required: tGlobal("forms.required") }}
             name={selectKeys[idx]}
             render={({ field: { onChange, value } }) => (
               <div className="flex  flex-col gap-2">
@@ -86,9 +85,7 @@ export const EditProfForm = ({
         ))}
         {inputs.map((input, idx) => (
           <Input
-            {...register(inputKeys[idx], {
-              required: tGlobal("forms.required"),
-            })}
+            {...register(inputKeys[idx], {})}
             error={errors[inputKeys[idx]]?.message}
             key={input}
             placeholder={input}

@@ -20,7 +20,7 @@ import { ReactNode } from "react";
 export interface Prof {
   id: number;
   bin: string;
-  industry: string;
+  industry: string | null;
   higher_union_org: string;
   union_name: string;
   union_type: string;
@@ -36,6 +36,46 @@ export const Tree = () => {
     queryKey: ["tree"],
     queryFn: async () => {
       const data: Prof = await GetTree(getCookie("id") ?? null);
+      if (getCookie("role") == "admin") {
+        const industry: Prof = {
+          id: -2,
+          bin: "",
+          industry: null,
+          higher_union_org: "Нет",
+          union_name: "Все отраслевые профсоюзы",
+          union_type: "Отраслевой профсоюз",
+          addres: "",
+          phone: "",
+          website: "",
+          email: "",
+          chairman_name: "",
+          children: [],
+        };
+        const territory: Prof = {
+          id: -1,
+          bin: "",
+          industry: null,
+          higher_union_org: "Нет",
+          union_name: "Все территориальные объединения профсоюзов",
+          union_type: "Территориальное объединение профсоюзов",
+          addres: "",
+          phone: "",
+          website: "",
+          email: "",
+          chairman_name: "",
+          children: [],
+        };
+        data.children.forEach((child) => {
+          if (child.union_type == territory.union_type) {
+            territory.children.push(child);
+          }
+          if (child.union_type == industry.union_type) {
+            industry.children.push(child);
+          }
+        });
+        data.children = [industry, territory];
+        return [data];
+      }
 
       return [data];
     },
@@ -74,43 +114,53 @@ const Branch = ({ prof }: { prof: Prof }) => {
     >
       <AccordionTrigger className="text-md font-bold  ">
         <section className="flex justify-between items-center flex-1 mr-2 lg:mr-10">
-          <div className="flex flex-col gap-2 text-start">
-            <span className="text-gray-500">
-              {t("type")} -{" "}
-              <span className="text-gray-900">{prof.union_type}</span>
-            </span>
-            <span className="text-gray-500">
-              {t("industry")} -{" "}
-              <span className="text-gray-900">{prof.industry}</span>
-            </span>
+          {prof.id > 0 ? (
+            <div className="flex flex-col gap-2 text-start">
+              <span className="text-gray-500">
+                {t("type")} -{" "}
+                <span className="text-gray-900">{prof.union_type}</span>
+              </span>
+              {prof.industry && (
+                <span className="text-gray-500">
+                  {t("industry")} -{" "}
+                  <span className="text-gray-900">{prof.industry}</span>
+                </span>
+              )}
 
-            <span className="text-gray-500">
-              {t("name")} -{" "}
-              <span className="text-gray-900">{prof.union_name}</span>
-            </span>
-          </div>
-          <div className="flex flex-col md:flex-row gap-3">
-            {prof.children.length !== 0 && (
-              <Link
-                className="p-2 h-fit rounded-md bg-black "
-                href={`/prof/${prof.id}?type=about`}
-              >
-                <Eye color="white" aria-label="visit" />
-              </Link>
-            )}
-            <DeleteButton
-              btn={
-                <Button disabled={isPending} onClick={() => mutate(prof.id)}>
-                  {t("delete")}
-                </Button>
-              }
-            />
-          </div>
+              <span className="text-gray-500">
+                {t("name")} -{" "}
+                <span className="text-gray-900">{prof.union_name}</span>
+              </span>
+            </div>
+          ) : (
+            <div>{prof.union_type}</div>
+          )}
+          {prof.id > 0 && (
+            <div className="flex flex-col md:flex-row gap-3">
+              {prof.children.length !== 0 && (
+                <Link
+                  className="p-2 h-fit rounded-md bg-black "
+                  href={`/prof/${prof.id}?type=about`}
+                >
+                  <Eye color="white" aria-label="visit" />
+                </Link>
+              )}
+              <DeleteButton
+                btn={
+                  <Button disabled={isPending} onClick={() => mutate(prof.id)}>
+                    {t("delete")}
+                  </Button>
+                }
+              />
+            </div>
+          )}
         </section>
       </AccordionTrigger>
       <AccordionContent className="">
         {prof.children.length == 0 ? (
-          <Link href={`/prof/${prof.id}?type=about`}>{t("go")}</Link>
+          prof.id > 0 && (
+            <Link href={`/prof/${prof.id}?type=about`}>{t("go")}</Link>
+          )
         ) : (
           <Accordion type="multiple" className="mt-4">
             {prof.children.map((d) => (

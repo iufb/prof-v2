@@ -18,7 +18,7 @@ export const Select = ({ value, onChange, label, content }: SelectProps) => {
     <div className="flex  flex-col gap-2">
       <Label className="text-md ">{label}</Label>
       <SelectUI onValueChange={onChange} value={value}>
-        <SelectTrigger className="w-full bg-white">
+        <SelectTrigger className="w-full bg-white ">
           <SelectValue placeholder={label} />
         </SelectTrigger>
         <SelectContent>

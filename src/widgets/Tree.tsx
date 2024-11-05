@@ -73,7 +73,7 @@ export const Tree = () => {
             industry.children.push(child);
           }
         });
-        data.children = [industry, territory];
+        data.children = [territory, industry];
         return [data];
       }
 

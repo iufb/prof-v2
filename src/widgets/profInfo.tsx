@@ -28,7 +28,7 @@ export const ProfInfo = () => {
   };
 
   return (
-    <section className="px-5 pt-5 pb-5 overflow-auto   border border-slate-300  rounded-sm min-h-[calc(100svh-5.625rem)] h-full">
+    <section className="px-5 pt-5 pb-5 overflow-auto   border border-slate-300 min-h-[calc(73svh)]  rounded-sm mb-5  h-full">
       <Tabs
         value={getSearchParam("type")}
         defaultValue={getSearchParam("type") ?? "about"}

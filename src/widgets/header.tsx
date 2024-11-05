@@ -13,10 +13,21 @@ import { getTranslations } from "next-intl/server";
 
 export const Header = ({ isAdmin, id }: { isAdmin: boolean; id: string }) => {
   return (
-    <header className="max-w-[87.5rem] w-full mx-auto h-20 text-md md:flex grid md:items-center md:justify-start">
-      <Navbar id={id} isAdmin={isAdmin} />
-      <Burger />
-    </header>
+    <>
+      <div className="bg-[#F73939] py-5 flex items-center justify-center ">
+        <img
+          src={"/header.png"}
+          alt="header"
+          className="w-full max-w-[380px] h-auto  mx-auto "
+        />
+      </div>
+      <header className=" grid py-4 h-20 text-md ">
+        <div className="max-w-[87.5rem] w-full mx-auto">
+          <Navbar id={id} isAdmin={isAdmin} />
+          <Burger />
+        </div>
+      </header>
+    </>
   );
 };
 export const Navbar = async ({

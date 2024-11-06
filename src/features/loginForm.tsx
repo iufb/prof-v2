@@ -16,7 +16,7 @@ export const LoginForm = () => {
     mutationFn: Login,
     onSuccess: (data) => {
       setCookie("token", data.token, { maxAge: 3600 });
-      if (getValues("username") == "root") {
+      if (data.is_admin && data.is_superuser) {
         setCookie("role", "admin", { maxAge: 3600 });
         router.push("/structure");
         return;

@@ -39,6 +39,14 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <main className="">
+            <div className="bg-[#F73939] py-5 flex items-center justify-center ">
+              <img
+                src={"/header.png"}
+                alt="header"
+                className="w-full max-w-[380px] h-auto  mx-auto "
+              />
+            </div>
+
             <QueryProvider>
               <Toaster />
               {children}
